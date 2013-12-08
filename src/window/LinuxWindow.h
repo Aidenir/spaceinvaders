@@ -6,15 +6,16 @@
 #ifndef LINUXWINDOW_H
 #define	LINUXWINDOW_H
 ////////////////////////////////////////////////////////////////////////
+// OS include
 #include "os.h"
-////////////////////////////////////////////////////////////////////////
+// Std & General includes
 #if defined (LINUX)
     #include <GL/glew.h>
     #include <GL/glx.h>
     #include <X11/Xlib.h>
     #include <X11/Xutil.h>
 #endif
-////////////////////////////////////////////////////////////////////////
+// Application includes
 #include "WindowHandler.h"
 #include "LinuxEventHandler.h"
 class WindowHandler;

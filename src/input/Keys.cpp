@@ -4,6 +4,7 @@
 // Copyright 2013 Blankycan
 ///////////////////////////////////////////////////////////////////// */
 #include "Keys.h"
+// Std & General includes
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <string.h>

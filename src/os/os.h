@@ -7,18 +7,21 @@
 #define	OS_H
 ////////////////////////////////////////////////////////////////////////
 
+// Linux
 #if defined (__linux__)
     #define LINUX
     #define OS "Linux"
+// Windows
 #elif defined(WIN32) || defined(__WIN32) || defined(_WIN64) || defined(OS_WINDOWS) && !defined(__CYGWIN__)
     #define WINDOWS
     #define OS "Windows"
+// Mac
 #elif defined(__APPLE__)
 	#define MAC
 	#define OS "Mac"
 #endif
 
 ////////////////////////////////////////////////////////////////////////
-#endif	/* OS_H */
+#endif	// OS_H
 ////////////////////////////////////////////////////////////////////////
 

@@ -15,15 +15,9 @@
 #include "Sleep.h"
 ////////////////////////////////////////////////////////////////////////
 
-int MainLoop(int argc, char** argv);
-
-int main(int argc, char** argv)
-{
-	std::cout << "SPACEINVADERS" << std::endl;
-
-	return MainLoop(argc, argv);
-}
-
+/** MainLoop
+    Creates window and runs the main loop.
+*/
 int MainLoop(int argc, char** argv)
 {
 	// Set up window resolution
@@ -73,8 +67,19 @@ int MainLoop(int argc, char** argv)
         // Update Graphics
         //graphics->Render(dt);
         
-        Util_Sleep::SleepMS(20);
+        Util::Sleep::SleepMS(20);
     }
     std::cout << "Runtime: " << (float(time.GetTimeMs() - startTime))/1000.0f << " s\n";
     return 0;
+}
+
+/** main
+    Main function, application starts and ends here.
+*/
+int main(int argc, char** argv)
+{
+    print("SPACEINVADERS");
+    print("OS: " << OS);
+    // Run the MainLoop
+    return MainLoop(argc, argv);
 }
