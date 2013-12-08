@@ -9,10 +9,11 @@
 #include <iostream>
 // Application includes
 #include "Global.h"
-#include "GraphicsManager.h"
-#include "WindowHandler.h"
 #include "Time.h"
 #include "Sleep.h"
+#include "GraphicsManager.h"
+#include "WindowHandler.h"
+#include "SpaceInvadersWindow.h"
 ////////////////////////////////////////////////////////////////////////
 
 /** MainLoop
@@ -33,7 +34,7 @@ int MainLoop(int argc, char** argv)
     print("GL Window Successfully created!\n");
     
     print("Giving window a WindowState..");
-    //mainWindow->SetWindowState(new PhysicsWindow(mainWindow));
+    mainWindow->SetWindowState(new SpaceInvadersWindow(mainWindow));
 
     Util::Time time;
     long startTime = time.TimeMs();
