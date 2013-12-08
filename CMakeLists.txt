@@ -25,7 +25,7 @@ include_directories(${INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR})
 #Set some compilier flags
 add_definitions( "-g" )
 #Set linker flags
-set(GCC_COVERAGE_LINK_FLAGS		"-pthread")
+set(GCC_COVERAGE_LINK_FLAGS		"-lX11 -lGLEW -lGL -pthread -lrt")
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
 
 #Make the executable
