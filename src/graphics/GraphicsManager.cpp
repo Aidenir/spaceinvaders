@@ -124,3 +124,17 @@ void GraphicsManager::DeleteGLWindow(int index)
 	hInstance = NULL;
     */
 }
+
+void GraphicsManager::Render(float dt)
+{
+    // Check if we have encountered any errors
+    int error = glGetError();
+    if(error != 0)
+        print("- GL ERROR: " << error); 
+    
+    // Render all windows
+    for(int i = 0; i < MAX_WINDOWS; ++i){
+        if(windows[i])
+            windows[i]->Render(dt);
+    }
+}

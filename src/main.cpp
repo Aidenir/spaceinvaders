@@ -66,7 +66,7 @@ int MainLoop(int argc, char** argv)
         //game->Update(dt);
         
         // Update Graphics
-        //graphics->Render(dt);
+        graphics->Render(dt);
         
         Util::Sleep::SleepMS(20);
     }
