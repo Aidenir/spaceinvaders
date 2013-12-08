@@ -1,0 +1,68 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+
+	"build_systems":
+    [
+        {
+            "name": "Project Build",
+            "cmd": [ "make", "-C", "bin/debug"],
+            "working_dir": "$project_path",
+            "file_regex": "/([^/:]+):(\\d+):(\\d+): ",
+            "variants": [
+            	{	
+            		"cmd" : ["ddd"],
+            		"name" : "Debug",
+                    "working_dir": "$project_path",
+            		"shell" : true
+            	},
+            	{	
+           			"cmd": [ "make", "-C", "bin/release"],
+                    "working_dir": "$project_path",
+            		"name" : "Release"
+            	},
+            	{	
+           			"cmd": [ "bash","scripts/setup.sh"],
+           			"working_dir": "$project_path",
+            		"name" : "Setup bin",
+            		"selector" : "source.shell"
+            	},
+            	{	
+           			"cmd": [ "bash","scripts/clean.sh"],
+           			"working_dir": "$project_path",
+            		"name" : "Clean",
+            		"selector" : "source.shell"
+            	},
+                {   
+                    "cmd": [ "pkill spaceinvaders || ./bin/debug/spaceinvaders"],
+                    "working_dir": "$project_path",
+                    "env": {"GST_DEBUG" : "0"},
+                    "name" : "Run",
+                    "shell" : true
+                },
+                {   
+                    "cmd": [ "bash","scripts/clean_rebuild.sh"],
+                    "working_dir": "$project_path",
+                    "name" : "Clean & Rebuild",
+                    "selector" : "source.shell"
+                }
+
+            ]
+        }
+    ],
+
+	"settings":
+    {
+        "sublimegdb_commandline": "gdb --interpreter=mi ./ircbot",
+        "sublimegdb_workingdir": "${project_path:bin/debug}",
+        "sublimeclang_options" :
+        [
+            "-Wno-reorder"
+        ],
+        "sublimeclang_options_script": "${project_path:scripts/flags.rb} ${project_path:bin/debug}"
+    }
+}
