@@ -11,6 +11,7 @@
 #include "GraphicsManager.h"
 #include "ShaderManager.h"
 #include "SpaceInvadersState.h"
+#include "ApplicationSettings.h"
 ////////////////////////////////////////////////////////////////////////
 
 SpaceInvadersWindow::SpaceInvadersWindow(WindowHandler *window) : WindowState(window)
@@ -59,9 +60,28 @@ void SpaceInvadersWindow::Initialize()
 
 void SpaceInvadersWindow::Resize(int width, int height)
 {
-	renderState.projectionMatrix.initProjectionOtherPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.0f, 16.f);
+	appSettings->width = width;
+	appSettings->height = height;
+
+	glViewport(0, 0, width, height);
+	float xRatio = 1.0f;
+	float yRatio = 1.0f;
+	
+	if(width > height)
+		xRatio = float(width) / float(height);
+	else if(width < height)
+		yRatio = float(height) / float(width);
+	
+	appSettings->xRatio = xRatio;
+	appSettings->yRatio = yRatio;
+
+	// Calculate pixel-size
+	appSettings->xPixel = ((double)xRatio / (double)width) * 2.0;
+	appSettings->yPixel = ((double)yRatio / (double)height) * 2.0;
+
+	//renderState.projectionMatrix.initProjectionOtherPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.0f, 16.f);
 	    //renderState.projectionMatrix.initProjectionPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -10.0f, 100.f);
-	    //renderState.projectionMatrix.initProjectionOrthogonal(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.f, 16.f);
+	renderState.projectionMatrix.initProjectionOrthogonal(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.f, 16.f);
 	if(shaderMan->Initialized())
 	{
 		glUseProgram(shaderMan->GetShader(SHADER_NORMAL)->program);

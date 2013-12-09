@@ -28,10 +28,10 @@ class SpaceInvadersState : public GameState{
 public:
 	SpaceInvadersState(WindowState *windowState);
 	~SpaceInvadersState();
-    /* Update, updates all physic bodies and reacts to some input */
-	void Update(float dt);
     /* Renders the scene */
 	void Render(RenderState *renderState);
+    /* Update, updates all physic bodies and reacts to some input */
+    void Update(float dt);
     /* Called when a key-action happens */
 	void HandleKey(bool* keys);
     /* Called when a mouse-wheel-action happens */
@@ -47,6 +47,7 @@ public:
 private:
     /* Renders the grid */
     void RenderGrid(RenderState *renderState);
+    void RenderOtherGrid(RenderState *renderState);
 	GLuint lineXId;
 	GLuint lineYId;
 	bool renderGrid;

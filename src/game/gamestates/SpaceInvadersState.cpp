@@ -47,8 +47,8 @@ SpaceInvadersState::SpaceInvadersState(WindowState *windowState) : GameState("Ph
 	meshMaker->MakeMesh(lineYId);
 
 	// Setup the camera
-    Vertex3f position(3.f, 6.f, 13.f);
-    Vertex3f rotation(PI / 16.f, 0.f, -PI / 8.f);
+    Vertex3f position(0.f, 0.f, 10.f);
+    Vertex3f rotation(0.f, 0.f, 0.f);
     camera = new Camera(position, rotation);
 }
 SpaceInvadersState::~SpaceInvadersState(){
@@ -56,68 +56,15 @@ SpaceInvadersState::~SpaceInvadersState(){
 	meshMaker->DeleteMesh(lineYId);
 }
 
-void SpaceInvadersState::Update(float dt){
-	// Camera transformation
-	Vertex3f trans;
-	
-	// Speed
-	float speed = 0.1f;
-	if(input->IsKey(KEY::Shift))	// Shift
-		speed *= 5.f;
-
-	// Check control and Rotation
-    bool move = false;
-	bool control = false;
-	bool rotation = false;
-	if(input->IsKey(KEY::Control)){	// Control
-		control = rotation = true;
-        speed *= 0.5f;
-    }
-
-	// Camera movement
-	if(input->IsKey(KEY::W)){	// Forward
-        Vertex3f vertex(0.f, 0.f, -speed);
-        trans += vertex;
-        move = true;
-	}
-    
-	if(input->IsKey(KEY::S)){	// Backward
-        Vertex3f vertex(0.f, 0.f, speed);
-        trans += vertex;
-        move = true;
-	}
-	if(input->IsKey(KEY::A)){	// Left
-        Vertex3f vertex(-speed, 0.f, 0.f);
-		trans += vertex;
-        move = true;
-    }
-	if(input->IsKey(KEY::D)){	// Right
-        Vertex3f vertex(speed, 0.f, 0.f);
-		trans += vertex;
-        move = true;
-    }
-    
-	if(input->IsKey(KEY::E)){	// Up
-        Vertex3f vertex(0.f, speed, 0.f);
-        trans += vertex;
-        move = true;
-    }
-	if(input->IsKey(KEY::Q)){	// Down
-        Vertex3f vertex(0.f, -speed, 0.f);
-        trans += vertex;
-        move = true;
-    }
-
-    if(move)
-    {
-        //renderRay = false;
-        if(!rotation)
-            camera->Move(trans);
-        else
-            camera->Rotate(trans);
-    }
-}
-
+/*
+########  ######## ##    ## ########  ######## ########  
+##     ## ##       ###   ## ##     ## ##       ##     ## 
+##     ## ##       ####  ## ##     ## ##       ##     ## 
+########  ######   ## ## ## ##     ## ######   ########  
+##   ##   ##       ##  #### ##     ## ##       ##   ##   
+##    ##  ##       ##   ### ##     ## ##       ##    ##  
+##     ## ######## ##    ## ########  ######## ##     ## 
+*/
 void SpaceInvadersState::Render(RenderState* renderState)
 {
 	// Apply the camera transformation
@@ -151,6 +98,86 @@ void SpaceInvadersState::Render(RenderState* renderState)
 	glUseProgram(0);
 }
 
+
+/*
+##     ## ########  ########     ###    ######## ######## 
+##     ## ##     ## ##     ##   ## ##      ##    ##       
+##     ## ##     ## ##     ##  ##   ##     ##    ##       
+##     ## ########  ##     ## ##     ##    ##    ######   
+##     ## ##        ##     ## #########    ##    ##       
+##     ## ##        ##     ## ##     ##    ##    ##       
+ #######  ##        ########  ##     ##    ##    ######## 
+ */
+void SpaceInvadersState::Update(float dt){
+	// Camera transformation
+	Vertex3f trans;
+	
+	// Speed
+	float speed = 0.1f;
+	if(input->IsKey(KEY::Shift))	// Shift
+		speed *= 5.f;
+
+	// Check control and Rotation
+    bool move = false;
+	bool control = false;
+	bool rotation = false;
+	if(input->IsKey(KEY::Control)){	// Control
+		control = rotation = true;
+        speed *= 0.5f;
+    }
+
+	// Camera movement
+	if(input->IsKey(KEY::W)){	// Up
+        Vertex3f vertex(0.f, speed, 0.f);
+        trans += vertex;
+        move = true;
+	}
+    
+	if(input->IsKey(KEY::S)){	// Down
+        Vertex3f vertex(0.f, -speed, 0.f);
+        trans += vertex;
+        move = true;
+	}
+	if(input->IsKey(KEY::A)){	// Left
+        Vertex3f vertex(-speed, 0.f, 0.f);
+		trans += vertex;
+        move = true;
+    }
+	if(input->IsKey(KEY::D)){	// Right
+        Vertex3f vertex(speed, 0.f, 0.f);
+		trans += vertex;
+        move = true;
+    }
+    
+	/*if(input->IsKey(KEY::E)){	// Forward
+        Vertex3f vertex(0.f, 0.f, -speed);
+        trans += vertex;
+        move = true;
+    }
+	if(input->IsKey(KEY::Q)){	// Backward
+        Vertex3f vertex(0.f, 0.f, speed);
+        trans += vertex;
+        move = true;
+    }*/
+
+    if(move)
+    {
+        //renderRay = false;
+        if(!rotation)
+            camera->Move(trans);
+        else
+            camera->Rotate(trans);
+    }
+}
+/*
+##    ## ######## ##    ## 
+##   ##  ##        ##  ##  
+##  ##   ##         ####   
+#####    ######      ##    
+##  ##   ##          ##    
+##   ##  ##          ##    
+##    ## ########    ##    
+*/
 void SpaceInvadersState::HandleKey(bool* keys)
 {
 	// Check if control is pressed
@@ -175,6 +202,16 @@ void SpaceInvadersState::HandleKey(bool* keys)
 	}
 	
 }
+
+/*
+##     ##  #######  ##     ##  ######  ######## 
+###   ### ##     ## ##     ## ##    ## ##       
+#### #### ##     ## ##     ## ##       ##       
+## ### ## ##     ## ##     ##  ######  ######   
+##     ## ##     ## ##     ##       ## ##       
+##     ## ##     ## ##     ## ##    ## ##       
+##     ##  #######   #######   ######  ######## 
+*/
 void SpaceInvadersState::HandleMouseWheel(int delta)
 {
 	camera->Zoom(float(delta) / 10.f);
@@ -198,8 +235,22 @@ void SpaceInvadersState::HandleMouse(int xPos, int yPos, WPARAM wParam)
 }
 #endif
 
+/*
+ ######   ########  #### ########  
+##    ##  ##     ##  ##  ##     ## 
+##        ##     ##  ##  ##     ## 
+##   #### ########   ##  ##     ## 
+##    ##  ##   ##    ##  ##     ## 
+##    ##  ##    ##   ##  ##     ## 
+ ######   ##     ## #### ########  
+ */
 void SpaceInvadersState::RenderGrid(RenderState *renderState){
 	RenderState oldRenderState = *renderState;
+	/*
+	tile 16x16
+	height 40, = 640px
+	width 60 = 960px
+	*/
 
 	Shader *shader = shaderMan->GetShader(SHADER_NORMAL);
 
@@ -209,18 +260,17 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
 	glUseProgram(shader->program);
     
     // Start with the x-axis lines
-    renderState->modelMatrix.initTranslation(0.f, 0.f, 10.f);
+    renderState->modelMatrix.initTranslation(0.f, appSettings->yRatio, 0.f);
     
     for(int i = 0; i < 21; ++i)
     {
         glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
         graphics->meshes[lineXId]->Render(renderState);
-        renderState->modelMatrix.translate(0.f, 0.f, -1.f);
+        renderState->modelMatrix.translate(0.f, -1.f * appSettings->yPixel * 8.f , 0.f);
     }
   
     // Then do the y-axis lines, but rotate them to fit at z-grid
     renderState->modelMatrix.initTranslation(10.f, 0.f, 0.f);
-    renderState->modelMatrix.rotateX(PI / 2.f);
     
     for(int i = 0; i < 21; ++i)
     {
