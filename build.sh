@@ -14,68 +14,47 @@
 #
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
-if [ "$1" = "clean" ]; then
+
+setupDebug() 
+{
+	if [ ! -d "bin/debug" ]; then
+		mkdir bin/debug
+		cd bin/debug
+		cmake ../../
+		cd ../../
+	fi
+}
+
+setupRelease() {
+	if [ ! -d "bin/release" ]; then
+		mkdir bin/release
+		cd bin/release
+		cmake -DCMAKE_BUILD_TYPE=Release ../../
+		cd ../../
+	fi
+}
+
+#If the rebuild or clean option is passed remove the bin
+if [ "$1" = "clean" ] || [ "$1" = "rebuild" ]; then
 	echo "Cleaning..."
 	rm -rf bin
-elif [ "$1" = "build" ]; then
+fi
+#If the option contains build (build and rebuild) setup the bin
+if [[ "$1" =~ "build" ]]; then
 	if [ ! -d "bin" ]; then
 		mkdir bin
 	fi
 	if [ "$2" = "r" ] 
 	then
 		echo "Building Release..."
-		if [ ! -d "bin/release" ]; then
-			mkdir bin/release
-			cd bin/release
-			cmake -DCMAKE_BUILD_TYPE=Release ../../
-			ln -s ../../src/shaders shaders
-			cd ../../
-		fi
+		setupRelease
 		cd bin/release
 		make
 	else
 		echo "Building debug..."
-		if [ ! -d "bin/debug" ]; then
-			mkdir bin/debug
-			cd bin/debug
-			cmake  ../../
-			ln -s ../../src/shaders shaders
-			cd ../../
-		fi
+		setupDebug
 		cd bin/debug
 		make
 	fi
-elif [ "$1" = "rebuild" ]; then
-	echo "Rebuilding.."
-	rm -rf bin
-	mkdir bin
-	if [ "$2" = "r" ] 
-	then
-		echo "Building Release..."
-		if [ ! -d "bin/release" ]; then
-			mkdir bin/release
-			cd bin/release
-			cmake -DCMAKE_BUILD_TYPE=Release ../../
-			ln -s ../../src/shaders shaders
-			cd ../../
-		fi
-		cd bin/release
-		make
-	else
-		echo "Building debug..."
-		if [ ! -d "bin/debug" ]; then
-			mkdir bin/debug
-			cd bin/debug
-			cmake  ../../
-			ln -s ../../src/shaders shaders
-			cd ../../
-		fi
-		cd bin/debug
-		make
-	fi
-else
-	echo "Do nothing"
 fi
-
-
 
