@@ -28,6 +28,7 @@ elif [ "$1" = "build" ]; then
 			mkdir bin/release
 			cd bin/release
 			cmake -DCMAKE_BUILD_TYPE=Release ../../
+			ln -s ../../src/shaders shaders
 			cd ../../
 		fi
 		cd bin/release
@@ -38,6 +39,7 @@ elif [ "$1" = "build" ]; then
 			mkdir bin/debug
 			cd bin/debug
 			cmake  ../../
+			ln -s ../../src/shaders shaders
 			cd ../../
 		fi
 		cd bin/debug
@@ -54,6 +56,7 @@ elif [ "$1" = "rebuild" ]; then
 			mkdir bin/release
 			cd bin/release
 			cmake -DCMAKE_BUILD_TYPE=Release ../../
+			ln -s ../../src/shaders shaders
 			cd ../../
 		fi
 		cd bin/release
