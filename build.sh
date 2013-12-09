@@ -26,7 +26,9 @@ elif [ "$1" = "build" ]; then
 		echo "Building Release..."
 		if [ ! -d "bin/release" ]; then
 			mkdir bin/release
+			cd bin/release
 			cmake -DCMAKE_BUILD_TYPE=Release ../../
+			cd ../../
 		fi
 		cd bin/release
 		make
@@ -34,7 +36,9 @@ elif [ "$1" = "build" ]; then
 		echo "Building debug..."
 		if [ ! -d "bin/debug" ]; then
 			mkdir bin/debug
+			cd bin/debug
 			cmake  ../../
+			cd ../../
 		fi
 		cd bin/debug
 		make
@@ -48,7 +52,9 @@ elif [ "$1" = "rebuild" ]; then
 		echo "Building Release..."
 		if [ ! -d "bin/release" ]; then
 			mkdir bin/release
+			cd bin/release
 			cmake -DCMAKE_BUILD_TYPE=Release ../../
+			cd ../../
 		fi
 		cd bin/release
 		make
@@ -56,7 +62,10 @@ elif [ "$1" = "rebuild" ]; then
 		echo "Building debug..."
 		if [ ! -d "bin/debug" ]; then
 			mkdir bin/debug
+			cd bin/debug
 			cmake  ../../
+			ln -s ../../src/shaders shaders
+			cd ../../
 		fi
 		cd bin/debug
 		make

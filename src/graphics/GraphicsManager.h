@@ -28,6 +28,8 @@ public:
 	~GraphicsManager();
 	/**	Creates a window with OpenGL, returns window or NULL */
 	WindowHandler * CreateGLWindow(int x, int y, int width, int height, char *windowTitle);
+	/** Initializes the manager */
+	bool Initialize();
 	/**	Deletes the OpenGL window at index. */
 	void DeleteGLWindow(int index);
 	/**	Updates the GraphicsManager, calls all rendering function for all windows, render all their states. */
@@ -52,6 +54,9 @@ public:
 private:
 	/**	Private constructor. */
 	GraphicsManager();
+	
+	/// Boolean whether manager is initialized
+	bool initialized;
 };
 
 ////////////////////////////////////////////////////////////////////////

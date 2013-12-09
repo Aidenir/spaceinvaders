@@ -209,7 +209,7 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
     
     // Start with the x-axis lines
     renderState->modelMatrix.initTranslation(0.f, 0.f, 10.f);
-    
+    /*
     for(int i = 0; i < 21; ++i)
     {
         glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
@@ -227,7 +227,7 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
         graphics->meshes[lineYId]->Render(renderState);
         renderState->modelMatrix.translate(-1.f, 0.f, 0.f);
     }
-    
+    */
 	glUseProgram(0);
 
 	// Go back to normal mode

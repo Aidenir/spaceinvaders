@@ -107,6 +107,11 @@ void SpaceInvadersWindow::Render(float dt)
 void SpaceInvadersWindow::GetUniformLocations()
 {
 	Shader* shader = shaderMan->GetShader(SHADER_NORMAL);
+	if(!shader)
+	{
+		printl("Shader is NULL", 1);
+		return;
+	}
 
 	// Get uniform location
 	renderState.handleProjectionMatrix = glGetUniformLocation(shader->program, "projectionMatrix");

@@ -11,10 +11,12 @@
 #include "Global.h"
 #include "Time.h"
 #include "Sleep.h"
+#include "Location.h"
 #include "GraphicsManager.h"
 #include "WindowHandler.h"
 #include "SpaceInvadersWindow.h"
 #include "GameManager.h"
+#include "InputManager.h"
 ////////////////////////////////////////////////////////////////////////
 
 /** MainLoop
@@ -75,6 +77,47 @@ int MainLoop(int argc, char** argv)
     return 0;
 }
 
+/** InitializeManagers
+    Initialized all managers for the application.
+*/
+int InitializeManagers()
+{
+    // Initialize all managers
+    print("\nInitializing Managers..");
+    
+    // GraphicsManager
+    prints("* GraphicsManager.. ");
+    if(!graphics->Initialize()){
+        print("Failed to initialize!");
+        return 1;
+    }
+    print("\tInitialized.");
+    // GameManager
+    prints("* GameManager.. ");
+    if(!game->Initialize()){
+        print("Failed to initialize!");
+        return 1;
+    }
+    print("\tInitialized.");
+    // InputManager
+    prints("* InputManager.. ");
+    if(!input->Initialize()){
+        print("Failed to initialize!");
+        return 1;
+    }
+    print("\tInitialized.");
+    // FileLoader
+    /*prints("* FileLoader.. ");
+    if(!fileLoader->Initialize()){
+        print("Failed to initialize!");
+        return 1;
+    }
+    print("\t\tInitialized.");
+    */
+    print("Initializing Managers finished!\n");
+    return 0;
+}
+
 /** main
     Main function, application starts and ends here.
 */
@@ -82,6 +125,13 @@ int main(int argc, char** argv)
 {
     print("SPACEINVADERS");
     print("OS: " << OS);
+    print("CurrentDir: " << Util::GetCurrentDir());
+    // Initialize managers
+    if(InitializeManagers() != 0)
+    {
+        printl("Failed to initialize managers.", 1);
+        return 1;
+    }
     // Run the MainLoop
     return MainLoop(argc, argv);
 }

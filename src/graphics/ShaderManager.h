@@ -9,8 +9,10 @@
 // Application includes
 #include "Global.h"
 #include "Shader.h"
+#include "Location.h"
 ////////////////////////////////////////////////////////////////////////
-#define SHADER_DIRECTORY "shaders/"
+#define ROOTPATH Util::GetCurrentDir()
+#define SHADER_DIRECTORY "/shaders/"
 enum ShaderEmuns{
 	SHADER_NORMAL,
 
@@ -53,6 +55,8 @@ private:
 
 	/// Boolean whether manager is initialized
 	bool initialized;
+	/// Shader directory
+	char shaderDir[1024];
 	/* Array with all the shaders */
 	Shader* shaders;
 };

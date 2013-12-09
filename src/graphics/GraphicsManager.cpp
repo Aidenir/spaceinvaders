@@ -6,22 +6,70 @@
 #include "GraphicsManager.h"
 // Application includes
 #include "Global.h"
+#include "ShaderManager.h"
 ////////////////////////////////////////////////////////////////////////
 
 GraphicsManager::GraphicsManager()
 {
-
+    initialized = false;
+    for(int i = 0; i < MAX_VBOS; ++i){
+        vertexArrayObjects[i] = NULL;
+        vertexBufferObjects[i] = NULL;
+        textureBufferObjects[i] = NULL;
+        normalBufferObjects[i] = NULL;
+    }
+    for(int i = 0; i < MAX_MESHES; ++i)
+        meshes[i] = NULL;
+    for(int i = 0; i < MAX_TEXTURES; ++i)
+        textures[i] = NULL;
+    for(int i = 0; i < MAX_WINDOWS; ++i)
+        windows[i] = NULL;
 }
 
 GraphicsManager::~GraphicsManager()
 {
-
+    for(int i = 0; i < MAX_VBOS; ++i){
+        if(vertexArrayObjects[i]){
+            glDeleteVertexArrays(1, &vertexArrayObjects[i]);
+            vertexArrayObjects[i] = NULL;
+        }
+        if(vertexBufferObjects[i]){
+            glDeleteBuffers(1, &vertexBufferObjects[i]);
+            vertexBufferObjects[i] = NULL;
+        }
+        if(textureBufferObjects[i]){
+            glDeleteBuffers(1, &textureBufferObjects[i]);
+            textureBufferObjects[i] = NULL;
+        }
+        if(normalBufferObjects[i]){
+            glDeleteBuffers(1, &normalBufferObjects[i]);
+            normalBufferObjects[i] = NULL;
+        }
+    }
+    for(int i = 0; i < MAX_MESHES; ++i){
+        if(meshes[i]){
+            delete meshes[i];
+            meshes[i] = NULL;
+        }
+    }
+    for(int i = 0; i < MAX_TEXTURES; ++i){
+        if(textures[i]){
+            delete textures[i];
+            textures[i] = NULL;
+        }
+    }
 }
 
 GraphicsManager * GraphicsManager::Instance()
 {
 	static GraphicsManager instance;
 	return &instance;
+}
+
+bool GraphicsManager::Initialize()
+{
+    initialized = true;
+    return true;
 }
 
 WindowHandler * GraphicsManager::CreateGLWindow(int x, int y, int width, int height, char *windowTitle)
@@ -56,8 +104,9 @@ WindowHandler * GraphicsManager::CreateGLWindow(int x, int y, int width, int hei
         print("Window registered for events.");
 
         // If this was the first window to be created, we should initialize ShaderManager
-        /*static bool first = true;
-        if(first){
+        static bool first = true;
+        if(first)
+        {
             first = false;
             // Initialize the ShaderManager
             print("\n* Initializing ShaderManager..");
@@ -66,16 +115,7 @@ WindowHandler * GraphicsManager::CreateGLWindow(int x, int y, int width, int hei
                 return false;
             }
             print("ShaderManager initialized.");
-
-            /*
-            // Assign values to uniforms
-            print("\n* Assigning uniforms..");
-            Shader* shader = shaderMan->GetShader(SHADER_NORMAL);
-            glUseProgram(shader->program);
-            UpdateUniformValues();
-            glUseProgram(0);
-             */
-        //}
+        }
         
         return windows[i];
     }

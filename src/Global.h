@@ -11,10 +11,10 @@
 ////////////////////////////////////////////////////////////////////////
 
 // Print macro
-#define printl(text, level)		std::cout << ((level == 0)? "" : "[OTHER] ") << text << std::endl;
+#define printl(text, level)		std::cout << ((level == 1)? "[Error] " : "") << text << std::endl;
 #define print(text)				std::cout << text << std::endl;
 // Prints macro, without new line
-#define printsl(text, level)		std::cout << ((level == 0)? "" : "[OTHER] ") << text;
+#define printsl(text, level)		std::cout << ((level == 1)? "[Error] " : "") << text;
 #define prints(text)			std::cout << text;
 
 ////////////////////////////////////////////////////////////////////////

@@ -13,17 +13,21 @@
 //#include "../EngineSettings.h"
 ////////////////////////////////////////////////////////////////////////
 
-ShaderManager* ShaderManager::Instance(){
+ShaderManager* ShaderManager::Instance()
+{
 	static ShaderManager instance;
 	return &instance;
 }
 
-ShaderManager::ShaderManager(){
+ShaderManager::ShaderManager()
+{
+	strcpy(shaderDir, ROOTPATH);
+	strcat(shaderDir, SHADER_DIRECTORY);
 	initialized = false;
-	
 }
 
-ShaderManager::~ShaderManager(){
+ShaderManager::~ShaderManager()
+{
 	for(int i = 0; i < SHADER_AMOUNT; ++i){
 		if(shaders[i].vertexShader != -1 && shaders[i].program < SHADER_AMOUNT){
 			glDetachShader(shaders[i].program, shaders[i].vertexShader);
@@ -96,7 +100,7 @@ bool ShaderManager::InitializeShaders(){
 
 		// Create the file name without extensions
 		char shaderfile[64];
-		strcpy(shaderfile, SHADER_DIRECTORY);
+		strcpy(shaderfile, shaderDir);
 		strcat(shaderfile, "normal");
 		strcat(shaderfile, glVersionNumber);
 
@@ -272,19 +276,19 @@ bool ShaderManager::CompileShaders(Shader* shader){
 	char* fs = TextFileRead(shader->fragFile);
 	// Check content
 	if(!vs && shader->vertFile){
-		print("- Error when reading vertex shader file.");
+		print("- Error when reading vertex shader file: " << shader->vertFile);
 		return false;
 	}
 	if(!ts && shader->tessFile){
-		print("- Error when reading tesselation shader file.");
+		print("- Error when reading tesselation shader file: " << shader->tessFile);
 		return false;
 	}
 	if(!gs && shader->geomFile){
-		print("- Error when reading geometry shader file.");
+		print("- Error when reading geometry shader file: " << shader->geomFile);
 		return false;
 	}
 	if(!fs && shader->fragFile){
-		print("- Error when reading fragment shader file.");
+		print("- Error when reading fragment shader file: " << shader->fragFile);
 		return false;
 	}
 	// Convert the content to fit next function

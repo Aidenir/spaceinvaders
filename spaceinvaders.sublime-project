@@ -42,8 +42,8 @@
             		"selector" : "source.shell"
             	},
                 {   
-                    "cmd": [ "pkill spaceinvaders || ./bin/debug/spaceinvaders"],
-                    "working_dir": "$project_path",
+                    "cmd": [ "pkill spaceinvaders || ./spaceinvaders"],
+                    "working_dir": "$project_path/bin/debug",
                     "env": {"GST_DEBUG" : "0"},
                     "name" : "Run",
                     "shell" : true
