@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 // Application includes
-#include "Manager.h"
 #include "MathLibrary.h"
 #include "Mesh.h"
 ////////////////////////////////////////////////////////////////////////
@@ -18,7 +17,8 @@
 ////////////////////////////////////////////////////////////////////////
 
 /* Reads data from files */
-class FileLoader : public Manager{
+class FileLoader 
+{
 public:
 	/* Returns singleton instance of the Manager */
 	static FileLoader* Instance();

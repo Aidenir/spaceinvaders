@@ -456,26 +456,6 @@ void FileLoader::CreateMesh(
         case MESH_TYPE_NULL:
             graphics->meshes[meshID] = new Mesh(vao, vbo, tbo, nbo);
             break;
-        case MESH_TYPE_AABB:
-            //graphics->meshes[meshID] = new AABB(vao, vbo, tbo, nbo);
-            break;
-        case MESH_TYPE_RIGIDBODY:{
-            graphics->meshes[meshID] = new RigidBody(vao, vbo, tbo, nbo);
-            // Find min and max points
-            Vertex3f min = *vertex[0], max = *vertex[0];
-            for(int i = 1; i < vertex.size(); ++i){
-                if(min > *vertex[i])
-                    min = *vertex[i];
-                if(max < *vertex[i])
-                    max = *vertex[i];
-            }
-            ((RigidBody *)graphics->meshes[meshID])->aabbMin = min;
-            ((RigidBody *)graphics->meshes[meshID])->aabbMax = max;
-            if(meshMaker->GetUseAABB()){
-                graphics->meshes[meshID]->aabbId = meshMaker->GetAABB((RigidBody *)graphics->meshes[meshID]);
-            }
-            break;
-        }
     }
     graphics->meshes[meshID]->vboVertexCount = vertCount;
     

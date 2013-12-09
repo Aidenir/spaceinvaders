@@ -8,7 +8,7 @@
 ////////////////////////////////////////////////////////////////////////
 // Std & General includes
 #include <stdio.h>  /* defines FILENAME_MAX */
-#ifdef defined(WINDOWS)
+#if defined(WINDOWS)
     #include <direct.h>
     #define currentDir _getcwd
 #elif defined(LINUX)

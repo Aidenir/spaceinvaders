@@ -6,7 +6,7 @@
 #include "MeshMaker.h"
 // Application includes
 #include "FileLoader.h"
-#include "EngineSettings.h"
+#include "ApplicationSettings.h"
 #include "Global.h"
 ////////////////////////////////////////////////////////////////////////
 
@@ -263,8 +263,8 @@ void MeshMaker::Tilify( int textureIndex, int **tileArray2, int tileSize )
 
 	// Make a tile
 	meshMaker->Clear();
-	float xSize = tileSize / 2.f * (float)engineSettings->xPixel;
-	float ySize = tileSize / 2.f * (float)engineSettings->yPixel;
+	float xSize = tileSize / 2.f * (float)appSettings->xPixel;
+	float ySize = tileSize / 2.f * (float)appSettings->yPixel;
     Vertex2f vert1(-xSize, ySize);
     Vertex2f vert2(-xSize,-ySize);
     Vertex2f vert3( xSize,-ySize);
