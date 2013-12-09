@@ -26,17 +26,17 @@ elif [ "$1" = "build" ]; then
 		echo "Building Release..."
 		if [ ! -d "bin/release" ]; then
 			mkdir bin/release
-			cd bin/release
 			cmake -DCMAKE_BUILD_TYPE=Release ../../
 		fi
+		cd bin/release
 		make
 	else
 		echo "Building debug..."
 		if [ ! -d "bin/debug" ]; then
 			mkdir bin/debug
-			cd bin/debug
 			cmake  ../../
 		fi
+		cd bin/debug
 		make
 	fi
 elif [ "$1" = "rebuild" ]; then
@@ -48,17 +48,17 @@ elif [ "$1" = "rebuild" ]; then
 		echo "Building Release..."
 		if [ ! -d "bin/release" ]; then
 			mkdir bin/release
-			cd bin/release
 			cmake -DCMAKE_BUILD_TYPE=Release ../../
 		fi
+		cd bin/release
 		make
 	else
 		echo "Building debug..."
 		if [ ! -d "bin/debug" ]; then
 			mkdir bin/debug
-			cd bin/debug
 			cmake  ../../
 		fi
+		cd bin/debug
 		make
 	fi
 else
