@@ -17,6 +17,7 @@
 #include "SpaceInvadersWindow.h"
 #include "GameManager.h"
 #include "InputManager.h"
+#include "FileLoader.h"
 ////////////////////////////////////////////////////////////////////////
 
 /** MainLoop
@@ -44,12 +45,26 @@ int MainLoop(int argc, char** argv)
     long timeStep = startTime;
     // The Main loop
     bool running = true;
+    int sleepTime = 16;
+    int frame = 0;
+    double frametime = 0.0;
     while(running)
     {
         // Get time diff
         long currentTime = time.TimeMs();
-        float dt = float(currentTime - timeStep) * 0.001f;
+        double dt = double(currentTime - timeStep) * 0.001;
         timeStep = currentTime;
+        ++frame;
+        if((frametime += dt) > 1.0)
+        {
+            print("FPS: " << frame);
+            frametime -= 1.0;
+            if(frame < 55)
+                --sleepTime;
+            else if(frame > 78)
+                ++sleepTime;
+            frame = 0;
+        }
         
         // Exit if there is no main window
         if(!graphics->windows[0]){
@@ -71,7 +86,7 @@ int MainLoop(int argc, char** argv)
         // Update Graphics
         graphics->Render(dt);
         
-        Util::Sleep::SleepMS(20);
+        Util::Sleep::SleepMS(sleepTime);
     }
     std::cout << "Runtime: " << (float(time.GetTimeMs() - startTime))/1000.0f << " s\n";
     return 0;
@@ -107,13 +122,13 @@ int InitializeManagers()
     }
     print("\tInitialized.");
     // FileLoader
-    /*prints("* FileLoader.. ");
+    prints("* FileLoader.. ");
     if(!fileLoader->Initialize()){
         print("Failed to initialize!");
         return 1;
     }
     print("\t\tInitialized.");
-    */
+    
     print("Initializing Managers finished!\n");
     return 0;
 }

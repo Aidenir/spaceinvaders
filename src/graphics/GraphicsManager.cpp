@@ -190,3 +190,8 @@ void GraphicsManager::GetUniformLocations()
             windowState->GetUniformLocations();
     }
 }
+
+void GraphicsManager::SetFullscreen(bool fullscreen, int screenWidth, int screenHeight)
+{
+    printl("Fullscreen not implemented yet.", 1)
+}
