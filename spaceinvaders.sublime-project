@@ -23,37 +23,37 @@
     [
         {
             "name": "Project Build",
-            "cmd": [ "sh build.sh build"],
+            "cmd": [ "./build.sh build"],
             "working_dir": "$project_path",
             "shell" : true,
             "file_regex": "/([^/:]+):(\\d+):(\\d+): ",
             "variants": [
             	{	
-           			"cmd": [ "sh build.sh build r"],
+           			"cmd": [ "./build.sh build r"],
                     "working_dir": "$project_path",
                     "shell" : true,
             		"name" : "Release"
             	},
             	{	
-           			"cmd": [ "sh build.sh clean" ],
+           			"cmd": [ "./build.sh clean" ],
            			"working_dir": "$project_path",
             		"name" : "Clean",
                     "shell" : true,
             		"selector" : "source.shell"
             	},
                 {   
+                    "cmd": [ "./build.sh rebuild"],
+                    "working_dir": "$project_path",
+                    "name" : "Clean & Rebuild",                    
+                    "shell" : true,
+                    "selector" : "source.shell"
+                },
+                {   
                     "cmd": [ "pkill spaceinvaders || ./spaceinvaders"],
                     "working_dir": "$project_path/bin/debug",
                     "env": {"GST_DEBUG" : "0"},
                     "name" : "Run",
                     "shell" : true
-                },
-                {   
-                    "cmd": [ "sh build.sh rebuild"],
-                    "working_dir": "$project_path",
-                    "name" : "Clean & Rebuild",                    
-                    "shell" : true,
-                    "selector" : "source.shell"
                 }
 
             ]
