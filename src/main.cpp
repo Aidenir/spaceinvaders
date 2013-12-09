@@ -14,6 +14,7 @@
 #include "GraphicsManager.h"
 #include "WindowHandler.h"
 #include "SpaceInvadersWindow.h"
+#include "GameManager.h"
 ////////////////////////////////////////////////////////////////////////
 
 /** MainLoop
@@ -63,7 +64,7 @@ int MainLoop(int argc, char** argv)
         }
         
         // Update Game
-        //game->Update(dt);
+        game->Update(dt);
         
         // Update Graphics
         graphics->Render(dt);

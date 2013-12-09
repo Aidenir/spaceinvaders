@@ -138,3 +138,15 @@ void GraphicsManager::Render(float dt)
             windows[i]->Render(dt);
     }
 }
+
+void GraphicsManager::GetUniformLocations()
+{
+    for(int i = 0; i < MAX_WINDOWS; ++i)
+    {
+        if(!windows[i])
+            continue;
+        WindowState *windowState = windows[i]->GetWindowState();
+        if(windowState)
+            windowState->GetUniformLocations();
+    }
+}

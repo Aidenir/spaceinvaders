@@ -8,8 +8,12 @@
 ////////////////////////////////////////////////////////////////////////
 // Application includes
 #include "WindowHandler.h"
+#include "Mesh.h"
 ////////////////////////////////////////////////////////////////////////
 #define MAX_WINDOWS     10
+#define MAX_MESHES		4096
+#define MAX_TEXTURES	512
+#define MAX_VBOS		4096
 ////////////////////////////////////////////////////////////////////////
 
 /**	GraphicsManager
@@ -28,9 +32,23 @@ public:
 	void DeleteGLWindow(int index);
 	/**	Updates the GraphicsManager, calls all rendering function for all windows, render all their states. */
 	void Render(float dt);
+	/* Function that collects the handles to the shaders uniforms */
+	void GetUniformLocations();
 	
     /// Windows
     WindowHandler *windows[MAX_WINDOWS];
+	// Meshes
+	Mesh *meshes[MAX_MESHES];
+	// Textures
+	Texture *textures[MAX_TEXTURES];
+	// Vertex array object array.
+	GLuint vertexArrayObjects[MAX_VBOS];
+	// Vertex buffer object array.
+	GLuint vertexBufferObjects[MAX_VBOS];
+	// Texture buffer object array.
+	GLuint textureBufferObjects[MAX_VBOS];
+	// Normal buffer object array.
+	GLuint normalBufferObjects[MAX_VBOS];
 private:
 	/**	Private constructor. */
 	GraphicsManager();

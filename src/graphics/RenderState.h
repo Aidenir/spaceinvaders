@@ -13,7 +13,7 @@
 	#include "../GL/glew.h"
 #endif
 // Application includes
-//#include "MathLibrary.h"
+#include "MathLibrary.h"
 //#include "Mesh.h"
 //class Mesh;
 ////////////////////////////////////////////////////////////////////////
@@ -23,9 +23,9 @@
 */
 struct RenderState{
 	RenderState(){
-		/*modelMatrix.initIdentity();
+		modelMatrix.initIdentity();
 		viewMatrix.initIdentity();
-		projectionMatrix.initIdentity();*/
+		projectionMatrix.initIdentity();
 
 		handleModelMatrix =
 		handleViewMatix =
@@ -45,10 +45,10 @@ struct RenderState{
         renderOutline = false;
 	}
 
-	/*Matrix4f modelMatrix;
+	Matrix4f modelMatrix;
 	Matrix4f viewMatrix;
 	Matrix4f projectionMatrix;
-*/
+
 	GLuint handleModelMatrix;
 	GLuint handleViewMatix;
 	GLuint handleProjectionMatrix;
