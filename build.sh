@@ -1,4 +1,4 @@
-#! bin/bash
+#!/bin/bash
 
 #        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
 #                    Version 2, December 2004 
@@ -14,17 +14,17 @@
 #
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
-if [ "$1" == "clean" ]
-then
+if [ "$1" = "clean" ]; then
 	echo "Cleaning..."
 	rm -rf bin
-elif [ "$1" == "build" ]
-then
-	if [ "$2" == "r" ] 
+elif [ "$1" = "build" ]; then
+	if [ ! -d "bin" ]; then
+		mkdir bin
+	fi
+	if [ "$2" = "r" ] 
 	then
 		echo "Building Release..."
-		if [ ! -d "bin"]
-			mkdir bin
+		if [ ! -d "bin/release" ]; then
 			mkdir bin/release
 			cd bin/release
 			cmake -DCMAKE_BUILD_TYPE=Release ../../
@@ -32,14 +32,37 @@ then
 		make
 	else
 		echo "Building debug..."
-		if [ ! -d "bin"]
-			mkdir bin
+		if [ ! -d "bin/debug" ]; then
 			mkdir bin/debug
 			cd bin/debug
 			cmake  ../../
 		fi
 		make
 	fi
+elif [ "$1" = "rebuild" ]; then
+	echo "Rebuilding.."
+	rm -rf bin
+	mkdir bin
+	if [ "$2" = "r" ] 
+	then
+		echo "Building Release..."
+		if [ ! -d "bin/release" ]; then
+			mkdir bin/release
+			cd bin/release
+			cmake -DCMAKE_BUILD_TYPE=Release ../../
+		fi
+		make
+	else
+		echo "Building debug..."
+		if [ ! -d "bin/debug" ]; then
+			mkdir bin/debug
+			cd bin/debug
+			cmake  ../../
+		fi
+		make
+	fi
+else
+	echo "Do nothing"
 fi
 
 

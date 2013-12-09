@@ -23,31 +23,22 @@
     [
         {
             "name": "Project Build",
-            "cmd": [ "make", "-C", "bin/debug"],
+            "cmd": [ "sh build.sh build"],
             "working_dir": "$project_path",
+            "shell" : true,
             "file_regex": "/([^/:]+):(\\d+):(\\d+): ",
             "variants": [
             	{	
-            		"cmd" : ["ddd"],
-            		"name" : "Debug",
+           			"cmd": [ "sh build.sh build r"],
                     "working_dir": "$project_path",
-            		"shell" : true
-            	},
-            	{	
-           			"cmd": [ "make", "-C", "bin/release"],
-                    "working_dir": "$project_path",
+                    "shell" : true,
             		"name" : "Release"
             	},
             	{	
-           			"cmd": [ "bash","scripts/setup.sh"],
-           			"working_dir": "$project_path",
-            		"name" : "Setup bin",
-            		"selector" : "source.shell"
-            	},
-            	{	
-           			"cmd": [ "bash","scripts/clean.sh"],
+           			"cmd": [ "sh build.sh clean" ],
            			"working_dir": "$project_path",
             		"name" : "Clean",
+                    "shell" : true,
             		"selector" : "source.shell"
             	},
                 {   
@@ -58,9 +49,10 @@
                     "shell" : true
                 },
                 {   
-                    "cmd": [ "bash","scripts/clean_rebuild.sh"],
+                    "cmd": [ "sh build.sh rebuild"],
                     "working_dir": "$project_path",
-                    "name" : "Clean & Rebuild",
+                    "name" : "Clean & Rebuild",                    
+                    "shell" : true,
                     "selector" : "source.shell"
                 }
 
