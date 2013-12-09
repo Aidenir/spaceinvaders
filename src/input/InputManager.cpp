@@ -6,7 +6,10 @@
 #include "InputManager.h"
 // Application includes
 #include "Global.h"
+#include "ApplicationSettings.h"
 #include "GraphicsManager.h"
+#include "MeshMaker.h"
+#include "FileLoader.h"
 ////////////////////////////////////////////////////////////////////////
 
 InputManager* InputManager::Instance(){
@@ -211,13 +214,13 @@ void InputManager::ParseCommand()
 		print("Command: Toggle Fullscreen");
 		if(strcmp(pCmd[1], "ON") == 0){
 			print("Toggle Fullscreen ON");
-			//engineSettings->fullscreen = true;
-			//graphics->SetFullscreen(engineSettings->fullscreen, 1366, 768);
+			appSettings->fullscreen = true;
+			graphics->SetFullscreen(appSettings->fullscreen, 1366, 768);
 		}
 		else if(strcmp(pCmd[1], "OFF") == 0){
 			print("Toggle Fullscreen OFF");
-			//engineSettings->fullscreen = false;
-			//graphics->SetFullscreen(engineSettings->fullscreen, 800, 600);
+			appSettings->fullscreen = false;
+			graphics->SetFullscreen(appSettings->fullscreen, 800, 600);
 		}
 		else
 			print("- Invalid second argument!");
@@ -257,7 +260,7 @@ void InputManager::ParseCommand()
 			}
 			else{
 				print("Setting resolution: " << resWidth << "x" << resHeight);
-				//graphics->SetFullscreen(engineSettings->fullscreen, resWidth, resHeight);
+				graphics->SetFullscreen(appSettings->fullscreen, resWidth, resHeight);
 			}
 		}
 	}
@@ -274,8 +277,8 @@ void InputManager::ParseCommand()
 		// Get filename
 		char fileName[256];
 		strcpy(fileName, pCmd[1]);
-		//GLuint meshID = meshMaker->GetFreeMeshIndex();
-		//fileLoader->LoadMesh(fileName, meshID);
+		GLuint meshID = meshMaker->GetFreeMeshIndex();
+		fileLoader->LoadMesh(fileName, meshID);
 	}
 	else
 		print("Command: Unknown");

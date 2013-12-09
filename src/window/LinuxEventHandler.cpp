@@ -11,6 +11,7 @@
 // Application includes
 #include "GraphicsManager.h"
 #include "WindowHandler.h"
+#include "InputManager.h"
 #include "Keys.h"
 ////////////////////////////////////////////////////////////////////////
 // Only for Linux
@@ -63,14 +64,13 @@ void LinuxEventHandler::HandleXEvent(int times)
                 
             // Get KeyPress
             case KeyPress:{
-                //bool shift = input->IsKey(KEY::Shift);
-                //int keyCode = GetKeycodeFromXkey((int)XLookupKeysym(&event.xkey, shift));
-                //input->KeyDown(keyCode);
-                /*
+                bool shift = input->IsKey(KEY::Shift);
+                int keyCode = GetKeycodeFromXkey((int)XLookupKeysym(&event.xkey, shift));
+                input->KeyDown(keyCode);
+                
                 if(keyCode == KEY::Space)
                     for(int i = 0; i < KEY::KEY_AMOUNT; ++i)
                         std::cout << "i " << input->IsKey(i) << " " << GetKeyString(i);
-                 */
                 break;
             }
             // KeyRelease
@@ -87,9 +87,9 @@ void LinuxEventHandler::HandleXEvent(int times)
                     }
                 }
                 if (!repeated){
-                    //bool shift = input->IsKey(KEY::Shift);
-                    //int keyCode = GetKeycodeFromXkey((int)XLookupKeysym(&event.xkey, shift));
-                    //input->KeyUp(keyCode);
+                    bool shift = input->IsKey(KEY::Shift);
+                    int keyCode = GetKeycodeFromXkey((int)XLookupKeysym(&event.xkey, shift));
+                    input->KeyUp(keyCode);
                 }
                 break;
             }
@@ -121,7 +121,7 @@ void LinuxEventHandler::HandleXEvent(int times)
                 int rootX, rootY, winX, winY;
                 unsigned int mask;
                 XQueryPointer(window->windowHandler->display, window->windowHandler->window, &root, &child, &rootX, &rootY, &winX, &winY, &mask);
-                //input->HandleMouse(winX, winY, event.xbutton);
+                input->HandleMouse(winX, winY, event.xbutton);
                 
                 break;
             }
@@ -138,7 +138,7 @@ void LinuxEventHandler::HandleXEvent(int times)
                 int rootX, rootY, winX, winY;
                 unsigned int mask;
                 XQueryPointer(window->windowHandler->display, window->windowHandler->window, &root, &child, &rootX, &rootY, &winX, &winY, &mask);
-                //input->HandleMouse(winX, winY, event.xbutton);
+                input->HandleMouse(winX, winY, event.xbutton);
                 break;
                 
             case ClientMessage:

@@ -36,6 +36,8 @@ public:
 	void Render(float dt);
 	/* Function that collects the handles to the shaders uniforms */
 	void GetUniformLocations();
+	/* Sets fullscreen mode, not implemented yet */
+	void SetFullscreen(bool fullscreen, int screenWidth = -1, int screenHeight = -1);
 	
     /// Windows
     WindowHandler *windows[MAX_WINDOWS];

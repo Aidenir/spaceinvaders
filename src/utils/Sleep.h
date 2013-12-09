@@ -23,7 +23,7 @@ public:
     static void SleepMS(int milliseconds)
     {
         #if defined (LINUX)
-            usleep(milliseconds*10);
+            usleep(milliseconds*1000);
         #elif defined (WINDOWS)
             Sleep(milliseconds);
         #endif
