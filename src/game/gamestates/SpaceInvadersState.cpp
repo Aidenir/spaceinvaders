@@ -31,19 +31,22 @@ SpaceInvadersState::SpaceInvadersState(WindowState *windowState) : GameState("Ph
 	float xRatio = appSettings->xRatio;
 	float yRatio = appSettings->yRatio;
 	
+	float width = ((float)appSettings->width / (float)appSettings->gameWidth) * appSettings->xGameRatio;
+	float height = ((float)appSettings->height / (float)appSettings->gameHeight) * appSettings->yGameRatio;
+	print("line width: " << width << ", line height: " << height);
     // Create horizontal lines
 	meshMaker->Clear();
 	lineXId = meshMaker->GetFreeMeshIndex();
-	meshMaker->AddVertexPoint(-xRatio*10, 0.f);
-	meshMaker->AddVertexPoint( xRatio*10, 0.f);
-	meshMaker->AddVertexPoint(-xRatio*10, 0.f);
+	meshMaker->AddVertexPoint(-width, 0.f);
+	meshMaker->AddVertexPoint( width, 0.f);
+	meshMaker->AddVertexPoint(-width, 0.f);
 	meshMaker->MakeMesh(lineXId);
 	// Create vertical lines
 	meshMaker->Clear();
 	lineYId = meshMaker->GetFreeMeshIndex();
-	meshMaker->AddVertexPoint(0.f, -yRatio*10);
-	meshMaker->AddVertexPoint(0.f,  yRatio*10);
-	meshMaker->AddVertexPoint(0.f, -yRatio*10);
+	meshMaker->AddVertexPoint(0.f, -height);
+	meshMaker->AddVertexPoint(0.f,  height);
+	meshMaker->AddVertexPoint(0.f, -height);
 	meshMaker->MakeMesh(lineYId);
 
 	// Setup the camera
@@ -75,7 +78,7 @@ void SpaceInvadersState::Render(RenderState* renderState)
     // Apply renderState settings
     //renderState->renderAABB = this->renderAABB;
     //renderState->renderOutline = this->renderOutline;
-    
+
     // Render the grid
 	if(renderGrid)
 		RenderGrid(renderState);
@@ -260,24 +263,27 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
 	glUseProgram(shader->program);
     
     // Start with the x-axis lines
-    renderState->modelMatrix.initTranslation(0.f, appSettings->yRatio, 0.f);
+    renderState->modelMatrix.initTranslation(0.f, 1.f/appSettings->xGameRatio, 0.f);
     
-    for(int i = 0; i < 21; ++i)
+    for(int i = 0; i < 41; ++i)
     {
         glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-        graphics->meshes[lineXId]->Render(renderState);
-        renderState->modelMatrix.translate(0.f, -1.f * appSettings->yPixel * 8.f , 0.f);
+    	if(i%10 != 0)
+        	graphics->meshes[lineXId]->Render(renderState);
+        renderState->modelMatrix.translate(0.f, -(float)appSettings->xPixel * 16.f , 0.f);
     }
   
     // Then do the y-axis lines, but rotate them to fit at z-grid
-    renderState->modelMatrix.initTranslation(10.f, 0.f, 0.f);
+    renderState->modelMatrix.initTranslation(-1.f/appSettings->yGameRatio, 0.f, 0.f);
     
-    for(int i = 0; i < 21; ++i)
+    for(int i = 0; i < 61; ++i)
     {
         glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-        graphics->meshes[lineYId]->Render(renderState);
-        renderState->modelMatrix.translate(-1.f, 0.f, 0.f);
+    	if(i%10 != 0)
+    		graphics->meshes[lineYId]->Render(renderState);
+        renderState->modelMatrix.translate((float)appSettings->yPixel * 16.f, 0.f, 0.f);
     }
+
     
 	glUseProgram(0);
 

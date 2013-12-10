@@ -23,8 +23,14 @@ public:/* Static instance function, to get a copy of the singleton */
 	int prevWidth, prevHeight;
 	/* Screen ratio */
 	float xRatio, yRatio;
+	/// Game width and height
+	int gameWidth, gameHeight;
+	/// Game ratio
+	float xGameRatio, yGameRatio;
 	/* Pixel height and width */
 	double xPixel, yPixel;
+	/// Smallest pixel size
+	double minPixel;
 	/* Color bits */
 	int bits;
 	/* Describes the used OpenGL version (4.2 or 3.3) */

@@ -19,7 +19,10 @@ ApplicationSettings::ApplicationSettings()
 	prevWidth = width;
 	prevHeight = height;
 	xRatio = yRatio = 1.0f;
-	xPixel = yPixel = 0.001;
+	gameWidth = 960;
+	gameHeight = 640;
+	xGameRatio = yGameRatio = 1.0f;
+	minPixel = xPixel = yPixel = 0.001;
 	bits = 32;
 }
 ApplicationSettings::~ApplicationSettings()
