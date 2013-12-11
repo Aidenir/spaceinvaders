@@ -88,12 +88,14 @@ void InitializeKeyStrings()
             strcat(keyString[keyCode], &end);
         }
     }
+    initialized = true;
 }
 
 char * GetKeyString(int keyCode)
 {
     if(!initialized)
         InitializeKeyStrings();
+
     return keyString[keyCode];
 }
 
@@ -130,6 +132,11 @@ int GetKeycodeFromXkey(int xKey)
         
         case XK_Home:                           return KEY::Home;
         case XK_End:                            return KEY::End;
+
+        case XK_Up:                             return KEY::Up;
+        case XK_Down:                           return KEY::Down;
+        case XK_Left:                           return KEY::Left;
+        case XK_Right:                          return KEY::Right;
         
         default:                                return KEY::NULL_KEY;
     }

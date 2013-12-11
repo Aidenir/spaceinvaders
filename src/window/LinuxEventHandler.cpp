@@ -68,9 +68,9 @@ void LinuxEventHandler::HandleXEvent(int times)
                 int keyCode = GetKeycodeFromXkey((int)XLookupKeysym(&event.xkey, shift));
                 input->KeyDown(keyCode);
                 
-                if(keyCode == KEY::Space)
+               /*if(keyCode == KEY::Space)
                     for(int i = 0; i < KEY::KEY_AMOUNT; ++i)
-                        std::cout << "i " << input->IsKey(i) << " " << GetKeyString(i);
+                        std::cout << "i " << input->IsKey(i) << " " << GetKeyString(i);*/
                 break;
             }
             // KeyRelease

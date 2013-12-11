@@ -68,12 +68,12 @@ SpaceInvadersState::SpaceInvadersState(WindowState *windowState) : GameState("Ph
 	meshMaker->AddUvPoint(1, 0);
 	meshMaker->AddUvPoint(1, 1);
     meshMaker->MakeMesh(spaceShipId);
-    spaceship = new SpaceShip(spaceShipId);
-    spaceship->SetPosition(Vector2f(0.f, -((float)appSettings->gameHeight / (float)appSettings->height)+yPixel*32.f));
     // Texture
     GLuint spaceShipTexId = meshMaker->GetFreeTextureIndex();
     graphics->textures[spaceShipTexId] = new Texture("spaceship.png");
     meshMaker->SetTexture(spaceShipId, spaceShipTexId);
+    spaceship = new SpaceShip(spaceShipId);
+    spaceship->SetPosition(Vector2f(0.f, -((float)appSettings->gameHeight / (float)appSettings->height)+yPixel*32.f));
 }
 SpaceInvadersState::~SpaceInvadersState(){
 	meshMaker->DeleteMesh(lineXId);
@@ -146,10 +146,8 @@ void SpaceInvadersState::RenderSpaceShip(RenderState *renderState)
 	glUseProgram(shader->program);
 
 	// Translate
-	Vector2f spaceShipPos = spaceship->GetPosition();
-	renderState->modelMatrix.initTranslation(spaceShipPos[X], spaceShipPos[Y], 5.f);
-    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-	graphics->meshes[spaceship->GetMeshId()]->Render(renderState);
+	if(spaceship)
+		spaceship->Render(renderState);
 /*
     // Start with the x-axis lines, TOP
     renderState->modelMatrix.initTranslation(0.f, -((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
@@ -207,26 +205,33 @@ void SpaceInvadersState::Update(float dt){
     }
 
 	// Camera movement
-	if(input->IsKey(KEY::W)){	// Up
+	if(input->IsKey(KEY::W) || input->IsKey(KEY::Up)){	// Up
         Vertex2f vertex(0.f, speed);
         trans += vertex;
         move = true;
 	}
     
-	if(input->IsKey(KEY::S)){	// Down
+	if(input->IsKey(KEY::S) || input->IsKey(KEY::Down)){	// Down
         Vertex2f vertex(0.f, -speed);
         trans += vertex;
         move = true;
 	}
-	if(input->IsKey(KEY::A)){	// Left
+	if(input->IsKey(KEY::A) || input->IsKey(KEY::Left)){	// Left
         Vertex2f vertex(-speed, 0.f);
 		trans += vertex;
         move = true;
     }
-	if(input->IsKey(KEY::D)){	// Right
+	if(input->IsKey(KEY::D) || input->IsKey(KEY::Right)){	// Right
         Vertex2f vertex(speed, 0.f);
 		trans += vertex;
         move = true;
+    }
+
+    if(input->IsKey(KEY::Space))
+    {
+    	input->SetKey(KEY::Space, false);
+    	if(spaceship)
+    		spaceship->Fire();
     }
     
 	/*if(input->IsKey(KEY::E)){	// Forward
@@ -248,6 +253,9 @@ void SpaceInvadersState::Update(float dt){
         else
             ;//camera->Rotate(trans);
     }
+
+    // Update the spaceship
+    spaceship->Update(dt);
 }
 /*
 ##    ## ######## ##    ## 
