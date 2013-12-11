@@ -107,6 +107,7 @@ void SpaceInvadersWindow::Resize(int width, int height)
 	print("width: " << appSettings->width << ", height: " << appSettings->height);
 	print("gameWidth: " << appSettings->gameWidth << ", gameHeight: " << appSettings->gameHeight);
     print("xRatio: " << appSettings->xRatio << ", yRatio: " << appSettings->yRatio);
+    print("xGameRatio: " << appSettings->xGameRatio << ", yGameRatio: " << appSettings->yGameRatio);
     print("xPixel: " << appSettings->xPixel << ", yPixel: " << appSettings->yPixel);
 
 	//renderState.projectionMatrix.initProjectionOtherPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.0f, 16.f);

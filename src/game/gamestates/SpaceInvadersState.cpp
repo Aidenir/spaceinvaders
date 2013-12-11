@@ -31,8 +31,8 @@ SpaceInvadersState::SpaceInvadersState(WindowState *windowState) : GameState("Ph
 	float xRatio = appSettings->xRatio;
 	float yRatio = appSettings->yRatio;
 	
-	float width = ((float)appSettings->width / (float)appSettings->gameWidth) * appSettings->xGameRatio;
-	float height = ((float)appSettings->height / (float)appSettings->gameHeight) * appSettings->yGameRatio;
+	float width = ((float)appSettings->gameWidth / (float)appSettings->width);// * appSettings->xGameRatio;
+	float height = ((float)appSettings->gameHeight / (float)appSettings->height);// * appSettings->yGameRatio;
 	print("line width: " << width << ", line height: " << height);
     // Create horizontal lines
 	meshMaker->Clear();
@@ -263,25 +263,25 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
 	glUseProgram(shader->program);
     
     // Start with the x-axis lines
-    renderState->modelMatrix.initTranslation(0.f, 1.f/appSettings->xGameRatio, 0.f);
+    renderState->modelMatrix.initTranslation(0.f, ((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
     
     for(int i = 0; i < 41; ++i)
     {
         glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-    	if(i%10 != 0)
+    	if(i == 0 || i == 40 || i%10 != 0)
         	graphics->meshes[lineXId]->Render(renderState);
-        renderState->modelMatrix.translate(0.f, -(float)appSettings->xPixel * 16.f , 0.f);
+        renderState->modelMatrix.translate(0.f, -(float)appSettings->yPixel * 16.f , 0.f);
     }
   
     // Then do the y-axis lines, but rotate them to fit at z-grid
-    renderState->modelMatrix.initTranslation(-1.f/appSettings->yGameRatio, 0.f, 0.f);
+    renderState->modelMatrix.initTranslation(-((float)appSettings->gameWidth / (float)appSettings->width), 0.f, 0.f);
     
     for(int i = 0; i < 61; ++i)
     {
         glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-    	if(i%10 != 0)
+    	if(i == 0 || i == 60 || i%10 != 0)
     		graphics->meshes[lineYId]->Render(renderState);
-        renderState->modelMatrix.translate((float)appSettings->yPixel * 16.f, 0.f, 0.f);
+        renderState->modelMatrix.translate((float)appSettings->xPixel * 16.f, 0.f, 0.f);
     }
 
     
