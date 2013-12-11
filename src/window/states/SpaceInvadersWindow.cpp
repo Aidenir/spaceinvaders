@@ -90,8 +90,17 @@ void SpaceInvadersWindow::Resize(int width, int height)
 	gameHeight = int((float)gameHeight * scale);
 
 	// Calculate pixel-size
-	appSettings->xPixel = ((1.0 / (double)appSettings->xGameRatio) / (double)gameWidth) * 2.0;
-	appSettings->yPixel = ((1.0 / (double)appSettings->yGameRatio) / (double)gameHeight) * 2.0;
+	float xdiff = ((float)gameWidth / (float)width) - (-((float)gameWidth / (float)width));
+	float ydiff = ((float)gameHeight / (float)height) - (-((float)gameHeight / (float)height));
+	appSettings->xPixel = (double)xdiff / appSettings->gameWidth;
+	appSettings->yPixel = (double)ydiff / appSettings->gameHeight;
+	// Adjust so all pixels are inside screen
+	if(nxa <= nya)
+		appSettings->xPixel += appSettings->xPixel/double(appSettings->gameWidth/16.f);
+	if(nya <= nxa)
+		appSettings->yPixel += appSettings->yPixel/double(appSettings->gameHeight/16.f);
+	print("XDIFF: " << xdiff << ", YDIFF: " << ydiff);
+
 	appSettings->minPixel = (appSettings->xPixel <= appSettings->yPixel)? appSettings->xPixel : appSettings->yPixel;
 
 	// Apply settings
