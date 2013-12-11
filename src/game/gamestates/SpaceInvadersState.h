@@ -45,12 +45,15 @@ public:
 #endif
     
 private:
-    /* Renders the grid */
+    /** Renders a grid on the game area. */
     void RenderGrid(RenderState *renderState);
-    void RenderOtherGrid(RenderState *renderState);
+    /** Renders a border around the game screen. */
+    void RenderBorder(RenderState *renderState);
+
 	GLuint lineXId;
 	GLuint lineYId;
-	bool renderGrid;
+    bool renderGrid;
+    bool renderBorder;
 };
 
 ////////////////////////////////////////////////////////////////////////

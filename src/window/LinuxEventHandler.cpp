@@ -121,7 +121,12 @@ void LinuxEventHandler::HandleXEvent(int times)
                 int rootX, rootY, winX, winY;
                 unsigned int mask;
                 XQueryPointer(window->windowHandler->display, window->windowHandler->window, &root, &child, &rootX, &rootY, &winX, &winY, &mask);
-                input->HandleMouse(winX, winY, event.xbutton);
+                if(event.xbutton.button == 4)
+                    input->HandleMouseWheel(1);
+                else if(event.xbutton.button == 5)
+                    input->HandleMouseWheel(-1);
+                else
+                    input->HandleMouse(winX, winY, event.xbutton);
                 
                 break;
             }

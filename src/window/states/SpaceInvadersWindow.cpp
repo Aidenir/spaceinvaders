@@ -95,11 +95,17 @@ void SpaceInvadersWindow::Resize(int width, int height)
 	appSettings->xPixel = (double)xdiff / appSettings->gameWidth;
 	appSettings->yPixel = (double)ydiff / appSettings->gameHeight;
 	// Adjust so all pixels are inside screen
-	if(nxa <= nya)
+	
+	appSettings->appSize = 0;
+	if(nxa > nya)
+		appSettings->appSize = 1;
+	else
 		appSettings->xPixel += appSettings->xPixel/double(appSettings->gameWidth/16.f);
-	if(nya <= nxa)
+	if(nya > nxa)
+		appSettings->appSize = 2;
+	else
 		appSettings->yPixel += appSettings->yPixel/double(appSettings->gameHeight/16.f);
-	print("XDIFF: " << xdiff << ", YDIFF: " << ydiff);
+
 
 	appSettings->minPixel = (appSettings->xPixel <= appSettings->yPixel)? appSettings->xPixel : appSettings->yPixel;
 

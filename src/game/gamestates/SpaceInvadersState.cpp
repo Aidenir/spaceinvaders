@@ -23,6 +23,7 @@
 
 SpaceInvadersState::SpaceInvadersState(WindowState *windowState) : GameState("Physics Test", windowState){
 	renderGrid = true;
+	renderBorder = true;
     
     srand(time(NULL));
 
@@ -82,6 +83,9 @@ void SpaceInvadersState::Render(RenderState* renderState)
     // Render the grid
 	if(renderGrid)
 		RenderGrid(renderState);
+    // Render the border
+	if(renderBorder)
+		RenderBorder(renderState);
 
 	glUseProgram(shader->program);
     
@@ -189,16 +193,21 @@ void SpaceInvadersState::HandleKey(bool* keys)
 		control = true;
 	
 	// Toggle grid
-	if(input->IsKey(KEY::G) && control){
+	if(control && input->IsKey(KEY::G)){
 		input->SetKey(KEY::G, false);
 		renderGrid = !renderGrid;
+	}
+	// Toggle border
+	if(control && input->IsKey(KEY::B)){
+		input->SetKey(KEY::B, false);
+		renderBorder = !renderBorder;
 	}
 	
 	// If HOME key is pressed, reset view
 	if(input->IsKey(KEY::Home)){
 		input->SetKey(KEY::Home, false);
-        Vertex3f position;//(3.f, 6.f, 13.f);
-        Vertex3f rotation;//(PI / 16.f, 0.f, -PI / 8.f);
+        Vertex3f position;
+        Vertex3f rotation;
         camera->SetPosition(position);
 		camera->SetRotation(rotation);
 		camera->SetZoom(1.f);
@@ -218,6 +227,7 @@ void SpaceInvadersState::HandleKey(bool* keys)
 void SpaceInvadersState::HandleMouseWheel(int delta)
 {
 	camera->Zoom(float(delta) / 10.f);
+	print("scroll, delta: " << delta);
 }
 
 #if defined (LINUX)
@@ -261,25 +271,10 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
 	glUseProgram(shader->program);
-    /*
-    // Start with the x-axis lines
-    renderState->modelMatrix.initTranslation(0.f, ((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
-    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-	graphics->meshes[lineXId]->Render(renderState);
 
-    renderState->modelMatrix.initTranslation(0.f, -((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
-    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-	graphics->meshes[lineXId]->Render(renderState);
-
-	// Then do the y-axis lines, but rotate them to fit at z-grid
-    renderState->modelMatrix.initTranslation(-((float)appSettings->gameWidth / (float)appSettings->width), 0.f, 0.f);
-    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-	graphics->meshes[lineYId]->Render(renderState);
-
-    renderState->modelMatrix.initTranslation(((float)appSettings->gameWidth / (float)appSettings->width), 0.f, 0.f);
-    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-	graphics->meshes[lineYId]->Render(renderState);
-    */
+	
+	int appSize = appSettings->appSize;
+	print("AppSize: " << appSize);
 
     // Start with the x-axis lines
     renderState->modelMatrix.initTranslation(0.f, ((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
@@ -287,24 +282,68 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
     for(int i = 0; i < 41; ++i)
     {
         glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-    	if(i == 0 || i == 40 || i%10 != 0)
+    	if((i != 40 && (appSize == 1 || appSize == 0)) || appSize == 2)
         	graphics->meshes[lineXId]->Render(renderState);
         renderState->modelMatrix.translate(0.f, -(float)appSettings->yPixel * 16.f , 0.f);
     }
   
-    // Then do the y-axis lines, but rotate them to fit at z-grid
+    // Then do the y-axis lines
     renderState->modelMatrix.initTranslation(((float)appSettings->gameWidth / (float)appSettings->width), 0.f, 0.f);
     
     for(int i = 0; i < 61; ++i)
     {
         glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
-    	if(i == 0 || i == 60 || i%10 != 0)
+    	if((i != 60 && (appSize == 2 || appSize == 0)) || appSize == 1)
     		graphics->meshes[lineYId]->Render(renderState);
         renderState->modelMatrix.translate(-(float)appSettings->xPixel * 16.f, 0.f, 0.f);
     }
     
+	glUseProgram(0);
 
-    
+	// Go back to normal mode
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+	*renderState = oldRenderState;
+}
+
+void SpaceInvadersState::RenderBorder(RenderState *renderState)
+{
+		RenderState oldRenderState = *renderState;
+	/*
+	tile 16x16
+	height 40, = 640px
+	width 60 = 960px
+	*/
+
+	Shader *shader = shaderMan->GetShader(SHADER_NORMAL);
+
+	// Go into wireframe mode
+	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+
+	glUseProgram(shader->program);
+/*
+    // Start with the x-axis lines, TOP
+    renderState->modelMatrix.initTranslation(0.f, -((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
+    renderState->modelMatrix.translate(0.f, (float)appSettings->yPixel * 16.f * 39.f, 0.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[lineXId]->Render(renderState);
+	// BOTTOM
+    renderState->modelMatrix.initTranslation(0.f, ((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
+    renderState->modelMatrix.translate(0.f, -(float)appSettings->yPixel * 16.f * 39.f, 0.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[lineXId]->Render(renderState);
+
+	// Then do the y-axis lines, LEFT
+    renderState->modelMatrix.initTranslation(((float)appSettings->gameWidth / (float)appSettings->width), 0.f, 0.f);
+    renderState->modelMatrix.translate(-(float)appSettings->xPixel * 16.f * 59.f, 0.f, 0.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[lineYId]->Render(renderState);
+	// RIGHT
+    renderState->modelMatrix.initTranslation(-((float)appSettings->gameWidth / (float)appSettings->width)+(float)appSettings->xPixel*((float)appSettings->originGameWidth-16.f), 0.f, 0.f);
+    renderState->modelMatrix.translate((float)appSettings->xPixel * 16.f * 59.f, 0.f, 0.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[lineYId]->Render(renderState);
+  */  
 	glUseProgram(0);
 
 	// Go back to normal mode
