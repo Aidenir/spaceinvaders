@@ -16,6 +16,7 @@
 #include <iostream>
 // Application includes
 #include "GraphicsManager.h"
+#include "Location.h"
 ////////////////////////////////////////////////////////////////////////
 
 Texture::Texture(char *filename)
@@ -28,7 +29,8 @@ Texture::Texture(char *filename)
 		return;
 	*/
 	char filelocation[256];
-	strcpy(filelocation, "img/");
+	strcpy(filelocation, Util::GetCurrentDir());
+	strcat(filelocation, "/images/");
 	strcat(filelocation, filename);
 
 	

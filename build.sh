@@ -51,6 +51,8 @@ if [[ "$1" =~ "build" ]]; then
 		cd bin/release
 		rm shaders
 		ln -s ../../src/shaders shaders
+		rm images
+		ln -s ../../src/images images
 		make
 	else
 		echo "Building debug..."
@@ -58,6 +60,8 @@ if [[ "$1" =~ "build" ]]; then
 		cd bin/debug
 		rm shaders
 		ln -s ../../src/shaders shaders
+		rm images
+		ln -s ../../src/images images
 		make
 	fi
 fi

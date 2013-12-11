@@ -24,7 +24,6 @@ Mesh::Mesh(){
 	color[2] = 0.5f;
 	color[3] = 1.0f;
 	hasColor = false;
-    aabbId = -1;
     intersectable = false;
     type = MESH_TYPE_NULL;
 }
@@ -44,7 +43,6 @@ Mesh::Mesh(GLuint vao, GLuint vbo, GLuint tbo, GLuint nbo){
 	color[3] = 1.0f;
 	hasColor = false;
 	textureIndex = -1;
-    aabbId = -1;
     intersectable = false;
     type = MESH_TYPE_NULL;
 }
@@ -64,7 +62,6 @@ Mesh::Mesh(GLuint vao, GLuint vbo, GLuint tbo, GLuint nbo, float width, float he
 	color[3] = 1.0f;
 	hasColor = false;
 	textureIndex = -1;
-    aabbId = -1;
     intersectable = false;
     type = MESH_TYPE_NULL;
 }

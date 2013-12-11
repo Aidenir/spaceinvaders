@@ -19,6 +19,7 @@
 // Application includes
 #include "GameManager.h"
 #include "GameState.h"
+#include "SpaceShip.h"
 ////////////////////////////////////////////////////////////////////////
 
 /*  PhysicsTest
@@ -49,6 +50,11 @@ private:
     void RenderGrid(RenderState *renderState);
     /** Renders a border around the game screen. */
     void RenderBorder(RenderState *renderState);
+    /** Function to render the spaceship. */
+    void RenderSpaceShip(RenderState *renderState);
+
+    /// The spaceship
+    SpaceShip *spaceship;
 
 	GLuint lineXId;
 	GLuint lineYId;

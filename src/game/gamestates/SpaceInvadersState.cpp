@@ -19,6 +19,7 @@
 #include "InputManager.h"
 #include "MeshMaker.h"
 #include "ApplicationSettings.h"
+#include "MeshMaker.h"
 ////////////////////////////////////////////////////////////////////////
 
 SpaceInvadersState::SpaceInvadersState(WindowState *windowState) : GameState("Physics Test", windowState){
@@ -29,8 +30,8 @@ SpaceInvadersState::SpaceInvadersState(WindowState *windowState) : GameState("Ph
 
 	Shader *shader = shaderMan->GetShader(SHADER_NORMAL);
 
-	float xRatio = appSettings->xRatio;
-	float yRatio = appSettings->yRatio;
+	float xPixel = appSettings->xPixel;
+	float yPixel = appSettings->yPixel;
 	
 	float width = ((float)appSettings->gameWidth / (float)appSettings->width);// * appSettings->xGameRatio;
 	float height = ((float)appSettings->gameHeight / (float)appSettings->height);// * appSettings->yGameRatio;
@@ -54,10 +55,31 @@ SpaceInvadersState::SpaceInvadersState(WindowState *windowState) : GameState("Ph
     Vertex3f position(0.f, 0.f, 10.f);
     Vertex3f rotation(0.f, 0.f, 0.f);
     camera = new Camera(position, rotation);
+
+    // Create the spaceship
+    meshMaker->Clear();
+    GLuint spaceShipId = meshMaker->GetFreeMeshIndex();
+    meshMaker->AddVertexPoint(-xPixel * 16.f, yPixel * 16.f);
+    meshMaker->AddVertexPoint(-xPixel * 16.f,-yPixel * 16.f);
+    meshMaker->AddVertexPoint( xPixel * 16.f,-yPixel * 16.f);
+    meshMaker->AddVertexPoint( xPixel * 16.f, yPixel * 16.f);
+	meshMaker->AddUvPoint(0, 1);
+	meshMaker->AddUvPoint(0, 0);
+	meshMaker->AddUvPoint(1, 0);
+	meshMaker->AddUvPoint(1, 1);
+    meshMaker->MakeMesh(spaceShipId);
+    spaceship = new SpaceShip(spaceShipId);
+    spaceship->SetPosition(Vector2f(0.f, -((float)appSettings->gameHeight / (float)appSettings->height)+yPixel*32.f));
+    // Texture
+    GLuint spaceShipTexId = meshMaker->GetFreeTextureIndex();
+    graphics->textures[spaceShipTexId] = new Texture("spaceship.png");
+    meshMaker->SetTexture(spaceShipId, spaceShipTexId);
 }
 SpaceInvadersState::~SpaceInvadersState(){
 	meshMaker->DeleteMesh(lineXId);
 	meshMaker->DeleteMesh(lineYId);
+	if(spaceship)
+		delete spaceship;
 }
 
 /*
@@ -96,6 +118,10 @@ void SpaceInvadersState::Render(RenderState* renderState)
             objects[i]->Render(renderState);
     }*/
     
+    // Render Spaceship
+    if(spaceship)
+    	RenderSpaceShip(renderState);
+
 	//PrintSentence(renderState, "Made by Blankycan", Vector2f(1.5f * 16.f * (float)windowState->GetWindow()->GetXPixel(), -4.5f * 16.f * (float)windowState->GetWindow()->GetYPixel()));
 
     
@@ -103,6 +129,53 @@ void SpaceInvadersState::Render(RenderState* renderState)
    
    
 	glUseProgram(0);
+}
+
+void SpaceInvadersState::RenderSpaceShip(RenderState *renderState)
+{
+	RenderState oldRenderState = *renderState;
+	/*
+	tile 16x16
+	height 40, = 640px
+	width 60 = 960px
+	*/
+
+	Shader *shader = shaderMan->GetShader(SHADER_NORMAL);
+
+
+	glUseProgram(shader->program);
+
+	// Translate
+	Vector2f spaceShipPos = spaceship->GetPosition();
+	renderState->modelMatrix.initTranslation(spaceShipPos[X], spaceShipPos[Y], 5.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[spaceship->GetMeshId()]->Render(renderState);
+/*
+    // Start with the x-axis lines, TOP
+    renderState->modelMatrix.initTranslation(0.f, -((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
+    renderState->modelMatrix.translate(0.f, (float)appSettings->yPixel * 16.f * 39.f, 0.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[lineXId]->Render(renderState);
+	// BOTTOM
+    renderState->modelMatrix.initTranslation(0.f, ((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
+    renderState->modelMatrix.translate(0.f, -(float)appSettings->yPixel * 16.f * 39.f, 0.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[lineXId]->Render(renderState);
+
+	// Then do the y-axis lines, LEFT
+    renderState->modelMatrix.initTranslation(((float)appSettings->gameWidth / (float)appSettings->width), 0.f, 0.f);
+    renderState->modelMatrix.translate(-(float)appSettings->xPixel * 16.f * 59.f, 0.f, 0.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[lineYId]->Render(renderState);
+	// RIGHT
+    renderState->modelMatrix.initTranslation(-((float)appSettings->gameWidth / (float)appSettings->width)+(float)appSettings->xPixel*((float)appSettings->originGameWidth-16.f), 0.f, 0.f);
+    renderState->modelMatrix.translate((float)appSettings->xPixel * 16.f * 59.f, 0.f, 0.f);
+    glUniformMatrix4fv(renderState->handleModelMatrix, 1, GL_FALSE, renderState->modelMatrix.getContentColumnWise());
+	graphics->meshes[lineYId]->Render(renderState);
+  */  
+	glUseProgram(0);
+
+	*renderState = oldRenderState;
 }
 
 
@@ -117,12 +190,12 @@ void SpaceInvadersState::Render(RenderState* renderState)
  */
 void SpaceInvadersState::Update(float dt){
 	// Camera transformation
-	Vertex3f trans;
+	Vertex2f trans;
 	
 	// Speed
-	float speed = 0.1f;
+	float speed = 0.005f;
 	if(input->IsKey(KEY::Shift))	// Shift
-		speed *= 5.f;
+		speed *= 2.f;
 
 	// Check control and Rotation
     bool move = false;
@@ -135,23 +208,23 @@ void SpaceInvadersState::Update(float dt){
 
 	// Camera movement
 	if(input->IsKey(KEY::W)){	// Up
-        Vertex3f vertex(0.f, speed, 0.f);
+        Vertex2f vertex(0.f, speed);
         trans += vertex;
         move = true;
 	}
     
 	if(input->IsKey(KEY::S)){	// Down
-        Vertex3f vertex(0.f, -speed, 0.f);
+        Vertex2f vertex(0.f, -speed);
         trans += vertex;
         move = true;
 	}
 	if(input->IsKey(KEY::A)){	// Left
-        Vertex3f vertex(-speed, 0.f, 0.f);
+        Vertex2f vertex(-speed, 0.f);
 		trans += vertex;
         move = true;
     }
 	if(input->IsKey(KEY::D)){	// Right
-        Vertex3f vertex(speed, 0.f, 0.f);
+        Vertex2f vertex(speed, 0.f);
 		trans += vertex;
         move = true;
     }
@@ -171,9 +244,9 @@ void SpaceInvadersState::Update(float dt){
     {
         //renderRay = false;
         if(!rotation)
-            camera->Move(trans);
+            spaceship->AddMovement(trans);//camera->Move(trans);
         else
-            camera->Rotate(trans);
+            ;//camera->Rotate(trans);
     }
 }
 /*
@@ -274,7 +347,6 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
 
 	
 	int appSize = appSettings->appSize;
-	print("AppSize: " << appSize);
 
     // Start with the x-axis lines
     renderState->modelMatrix.initTranslation(0.f, ((float)appSettings->gameHeight / (float)appSettings->height), 0.f);
@@ -308,7 +380,7 @@ void SpaceInvadersState::RenderGrid(RenderState *renderState){
 
 void SpaceInvadersState::RenderBorder(RenderState *renderState)
 {
-		RenderState oldRenderState = *renderState;
+	RenderState oldRenderState = *renderState;
 	/*
 	tile 16x16
 	height 40, = 640px
