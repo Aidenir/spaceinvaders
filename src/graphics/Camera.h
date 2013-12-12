@@ -52,9 +52,9 @@ public:
 	/* Set Z-position */
 	void SetPositionZ(float z);
 	/* Move camera, add vector */
-	void Move(Vector3f& movement);
+	void Move(const Vector3f& movement);
 	/* Move camera, add vector */
-	void Move(Vertex3f& movement);
+	void Move(const Vertex3f& movement);
 
 	/* Set rotation */
 	void SetRotation(Vertex3f& rot);
@@ -65,9 +65,9 @@ public:
 	/* Set Z-Rotation */
 	void SetRotationZ(float z);
 	/* Rotate, add rotation */
-	void Rotate(Vector3f& rotate);
+	void Rotate(const Vector3f& rotate);
 	/* Rotate, add rotation */
-	void Rotate(Vertex3f& rotate);
+	void Rotate(const Vertex3f& rotate);
 	
 	/* Set zoom */
 	void SetZoom(float zoom);

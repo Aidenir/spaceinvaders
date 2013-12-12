@@ -26,8 +26,8 @@
 int MainLoop(int argc, char** argv)
 {
 	// Set up window resolution
-    int windowX = 1024;
-    int windowY = 768;
+    int windowX = 1920;
+    int windowY = 1080;
     // Create the main window
     print("* Window.. ");
     WindowHandler *mainWindow = graphics->CreateGLWindow(0, 0, windowX, windowY, "Space Invaders");

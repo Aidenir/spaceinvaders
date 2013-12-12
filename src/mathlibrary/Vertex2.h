@@ -26,6 +26,7 @@ public:
 	/** Vertex2(Vertex2<T>&)
 		Constructor that takes another Vertex2.*/
 	Vertex2(const Vertex2<T>& vertex);
+	Vertex2(const Vertex3<T>& vertex);
 
 	/** coord[2]
 		Represent the two coordinates of a vertex, x,y.*/
@@ -95,6 +96,11 @@ template <class T>
 Vertex2<T>::Vertex2(const Vertex2& vertex){
 	coord[0] = vertex.coord[0];
 	coord[1] = vertex.coord[1];
+}
+template <class T>
+Vertex2<T>::Vertex2(const Vertex3<T>& vertex){
+	coord[0] = (T)vertex.coord[0];
+	coord[1] = (T)vertex.coord[1];
 }
 
 template <class T>

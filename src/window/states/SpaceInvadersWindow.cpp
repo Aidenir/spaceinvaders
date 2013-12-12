@@ -125,9 +125,9 @@ void SpaceInvadersWindow::Resize(int width, int height)
     print("xGameRatio: " << appSettings->xGameRatio << ", yGameRatio: " << appSettings->yGameRatio);
     print("xPixel: " << appSettings->xPixel << ", yPixel: " << appSettings->yPixel);
 
-	//renderState.projectionMatrix.initProjectionOtherPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.0f, 16.f);
+	renderState.projectionMatrix.initProjectionOtherPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.0f, 16.f);
 	    //renderState.projectionMatrix.initProjectionPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -10.0f, 100.f);
-	renderState.projectionMatrix.initProjectionOrthogonal(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.f, 16.f);
+	//renderState.projectionMatrix.initProjectionOrthogonal(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.f, 16.f);
 	if(shaderMan->Initialized())
 	{
 		glUseProgram(shaderMan->GetShader(SHADER_NORMAL)->program);

@@ -26,7 +26,7 @@
             "cmd": [ "./build.sh build"],
             "working_dir": "$project_path",
             "shell" : true,
-            "file_regex": "/([^/:]+):(\\d+):(\\d+): ",
+            "file_regex": "([^\n:]+):(\\d+):",
             "variants": [
             	{	
            			"cmd": [ "./build.sh build r"],

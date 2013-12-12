@@ -188,10 +188,10 @@ void SpaceInvadersState::RenderSpaceShip(RenderState *renderState)
  */
 void SpaceInvadersState::Update(float dt){
 	// Camera transformation
-	Vertex2f trans;
+	Vertex3f trans;
 	
 	// Speed
-	float speed = 0.005f;
+	float speed = 0.1f;//0.005f;
 	if(input->IsKey(KEY::Shift))	// Shift
 		speed *= 2.f;
 
@@ -206,23 +206,23 @@ void SpaceInvadersState::Update(float dt){
 
 	// Camera movement
 	if(input->IsKey(KEY::W) || input->IsKey(KEY::Up)){	// Up
-        Vertex2f vertex(0.f, speed);
+        Vertex3f vertex(0.f, speed, 0.f);
         trans += vertex;
         move = true;
 	}
     
 	if(input->IsKey(KEY::S) || input->IsKey(KEY::Down)){	// Down
-        Vertex2f vertex(0.f, -speed);
+        Vertex3f vertex(0.f, -speed, 0.f);
         trans += vertex;
         move = true;
 	}
 	if(input->IsKey(KEY::A) || input->IsKey(KEY::Left)){	// Left
-        Vertex2f vertex(-speed, 0.f);
+        Vertex3f vertex(-speed, 0.f, 0.f);
 		trans += vertex;
         move = true;
     }
 	if(input->IsKey(KEY::D) || input->IsKey(KEY::Right)){	// Right
-        Vertex2f vertex(speed, 0.f);
+        Vertex3f vertex(speed, 0.f, 0.f);
 		trans += vertex;
         move = true;
     }
@@ -234,7 +234,7 @@ void SpaceInvadersState::Update(float dt){
     		spaceship->Fire();
     }
     
-	/*if(input->IsKey(KEY::E)){	// Forward
+	if(input->IsKey(KEY::E)){	// Forward
         Vertex3f vertex(0.f, 0.f, -speed);
         trans += vertex;
         move = true;
@@ -243,15 +243,18 @@ void SpaceInvadersState::Update(float dt){
         Vertex3f vertex(0.f, 0.f, speed);
         trans += vertex;
         move = true;
-    }*/
+    }
 
     if(move)
     {
         //renderRay = false;
         if(!rotation)
-            spaceship->AddMovement(trans);//camera->Move(trans);
+        {
+            spaceship->AddMovement(Vertex2f(trans));
+            camera->Move(trans);
+        }
         else
-            ;//camera->Rotate(trans);
+            camera->Rotate(trans);
     }
 
     // Update the spaceship

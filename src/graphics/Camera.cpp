@@ -53,7 +53,7 @@ void Camera::SetPositionX(float x) { position.coord[X] = x; }
 void Camera::SetPositionY(float y) { position.coord[Y] = y; }
 void Camera::SetPositionZ(float z) { position.coord[Z] = z; }
 
-void Camera::Move(Vector3f& movement)
+void Camera::Move(const Vector3f& movement)
 {
     /*
     Vector3f moveVec = R.mult(movement);
@@ -65,7 +65,7 @@ void Camera::Move(Vector3f& movement)
     //rotMat *= Matrix3f::getRotateY(rotation[Y]);
     position += rotMat.mult(movement);
 }
-void Camera::Move(Vertex3f& movement) 
+void Camera::Move(const Vertex3f& movement) 
 {
     /*
     Vector3f moveVec = R.mult(movement);
@@ -107,12 +107,12 @@ void Camera::SetRotationZ(float z)
     SetRotation(rotation);
 }
 
-void Camera::Rotate(Vector3f& rotate) 
+void Camera::Rotate(const Vector3f& rotate) 
 {
     this->rotation += Vertex3f(rotate);
     SetRotation(rotation);
 }
-void Camera::Rotate(Vertex3f& rotate) 
+void Camera::Rotate(const Vertex3f& rotate) 
 {
     this->rotation += rotate;
     SetRotation(rotation);

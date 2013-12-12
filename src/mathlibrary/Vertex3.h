@@ -29,6 +29,7 @@ public:
 		Constructor that takes another Vertex3.*/
 	Vertex3<T>(const Vertex3<T>& vertex);
 	Vertex3<T>(const Vector3<T>& vec);
+	Vertex3<T>(const Vertex2<T>& vertex);
 
 	/** coord[3]
 		Represent the three coordinates of a vertex, x,y,z.*/
@@ -115,6 +116,12 @@ Vertex3<T>::Vertex3(const Vector3<T>& vec){
 	coord[0] = (T)vec.coord[0];
 	coord[1] = (T)vec.coord[1];
 	coord[2] = (T)vec.coord[2];
+}
+template <class T>
+Vertex3<T>::Vertex3(const Vertex2<T>& vec){
+	coord[0] = (T)vec.coord[0];
+	coord[1] = (T)vec.coord[1];
+	coord[2] = (T)0.0;
 }
 
 template <class T>
