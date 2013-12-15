@@ -48,7 +48,7 @@
                     "selector" : "source.shell"
                 },
                 {   
-                    "cmd": [ "pkill spaceinvaders || ./spaceinvaders"],
+                    "cmd": [ "pkill ${project_base_name} || ./${project_base_name}"],
                     "working_dir": "$project_path/bin/debug",
                     "env": {"GST_DEBUG" : "0"},
                     "name" : "Run",
@@ -61,7 +61,13 @@
 
 	"settings":
     {
-        "sublimegdb_commandline": "gdb --interpreter=mi ./spaceinvaders",
+        "sublimeclang_options":
+        [
+            "-Wno-reorder",
+            "-Wno-return-type"
+        ],
+        "sublimeclang_options_script": "${project_path:flags.rb} ${project_path:bin/debug}",
+        "sublimegdb_commandline": "gdb --interpreter=mi ./${project_base_name}",
         "sublimegdb_workingdir": "${project_path:bin/debug}"
     }
 }
