@@ -11,6 +11,7 @@
 #include "GraphicsManager.h"
 #include "ShaderManager.h"
 #include "SpaceInvadersState.h"
+#include "ApplicationSettings.h"
 ////////////////////////////////////////////////////////////////////////
 
 SpaceInvadersWindow::SpaceInvadersWindow(WindowHandler *window) : WindowState(window)
@@ -59,9 +60,74 @@ void SpaceInvadersWindow::Initialize()
 
 void SpaceInvadersWindow::Resize(int width, int height)
 {
+	glViewport(0, 0, width, height);
+
+	// Game aspect ratio
+	int gameWidth = appSettings->gameWidth;
+	int gameHeight = appSettings->gameHeight;
+	
+	float xGameRatio = appSettings->xGameRatio;
+	float yGameRatio = appSettings->yGameRatio;
+	if(gameWidth > gameHeight)
+		xGameRatio = float(gameWidth) / float(gameHeight);
+	else if(gameWidth < gameHeight)
+		yGameRatio = float(gameHeight) / float(gameWidth);
+
+	// Screen aspect ratio
+	float xRatio = 1.0f;
+	float yRatio = 1.0f;
+	if(width > height)
+		xRatio = float(width) / float(height);
+	else if(width < height)
+		yRatio = float(height) / float(width);
+	
+	// Scale game screen to application screen
+	float nxa = (float)width/(float)gameWidth;
+	float nya = (float)height/(float)gameHeight;
+	float scale = (nxa <= nya)? nxa : nya;
+	// Update the game screen
+	gameWidth = int((float)gameWidth * scale);
+	gameHeight = int((float)gameHeight * scale);
+
+	// Calculate pixel-size
+	float xdiff = ((float)gameWidth / (float)width) - (-((float)gameWidth / (float)width));
+	float ydiff = ((float)gameHeight / (float)height) - (-((float)gameHeight / (float)height));
+	appSettings->xPixel = (double)xdiff / appSettings->gameWidth;
+	appSettings->yPixel = (double)ydiff / appSettings->gameHeight;
+	// Adjust so all pixels are inside screen
+	
+	appSettings->appSize = 0;
+	if(nxa > nya)
+		appSettings->appSize = 1;
+	else
+		appSettings->xPixel += appSettings->xPixel/double(appSettings->gameWidth/16.f);
+	if(nya > nxa)
+		appSettings->appSize = 2;
+	else
+		appSettings->yPixel += appSettings->yPixel/double(appSettings->gameHeight/16.f);
+
+
+	appSettings->minPixel = (appSettings->xPixel <= appSettings->yPixel)? appSettings->xPixel : appSettings->yPixel;
+
+	// Apply settings
+	appSettings->width = width;
+	appSettings->height = height;
+	appSettings->xRatio = xRatio;
+	appSettings->yRatio = yRatio;
+	appSettings->gameWidth = gameWidth;
+	appSettings->gameHeight = gameHeight;
+	appSettings->xGameRatio = xGameRatio;
+	appSettings->yGameRatio = yGameRatio;
+
+	print("width: " << appSettings->width << ", height: " << appSettings->height);
+	print("gameWidth: " << appSettings->gameWidth << ", gameHeight: " << appSettings->gameHeight);
+    print("xRatio: " << appSettings->xRatio << ", yRatio: " << appSettings->yRatio);
+    print("xGameRatio: " << appSettings->xGameRatio << ", yGameRatio: " << appSettings->yGameRatio);
+    print("xPixel: " << appSettings->xPixel << ", yPixel: " << appSettings->yPixel);
+
 	renderState.projectionMatrix.initProjectionOtherPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.0f, 16.f);
 	    //renderState.projectionMatrix.initProjectionPerspective(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -10.0f, 100.f);
-	    //renderState.projectionMatrix.initProjectionOrthogonal(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.f, 16.f);
+	//renderState.projectionMatrix.initProjectionOrthogonal(-window->GetXRatio(), window->GetXRatio(), -window->GetYRatio(), window->GetYRatio(), -16.f, 16.f);
 	if(shaderMan->Initialized())
 	{
 		glUseProgram(shaderMan->GetShader(SHADER_NORMAL)->program);

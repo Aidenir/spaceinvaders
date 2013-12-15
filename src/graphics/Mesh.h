@@ -25,8 +25,6 @@ struct RenderState;
 ////////////////////////////////////////////////////////////////////////
 enum Mesh_Types{
     MESH_TYPE_NULL,
-    MESH_TYPE_AABB,
-    MESH_TYPE_RIGIDBODY
 };
 ////////////////////////////////////////////////////////////////////////
 
@@ -59,8 +57,6 @@ public:
 	GLuint textureIndex;
 	/* If mesh should have a specific color */
 	bool hasColor;
-    /* AABB */
-    GLuint aabbId;
 	/* Vertex Array, and buffers */
 	int vao, vbo, tbo, nbo;
     /* If mesh is intersectable */

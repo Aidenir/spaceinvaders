@@ -161,8 +161,10 @@ void WindowHandler::SetWindowState(WindowState* windowState)
         delete windowState;
     // Then apply the new windowState
     this->windowState = windowState;
-    windowState->Initialize();
+    // Resize
     windowState->Resize(width, height);
+    // Initialize state
+    windowState->Initialize();
 }
 
 void WindowHandler::Render(float dt)

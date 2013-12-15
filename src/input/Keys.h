@@ -27,7 +27,7 @@ enum KEY
     Enter, Space, Control, Shift, Escape, Alt, Tab, Backspace,
     Plus, Minus, Multiply, Divided,
     Period, Comma,
-    Home, End,
+    Home, End, Up, Down, Left, Right,
     
     KEY_AMOUNT,
 };

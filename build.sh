@@ -51,11 +51,19 @@ if [[ "$1" =~ "build" ]]; then
 		echo "Building Release..."
 		setupRelease
 		cd bin/release
+		rm shaders
+		ln -s ../../src/shaders shaders
+		rm images
+		ln -s ../../src/images images
 		make
 	else
 		echo "Building debug..."
 		setupDebug
 		cd bin/debug
+		rm shaders
+		ln -s ../../src/shaders shaders
+		rm images
+		ln -s ../../src/images images
 		make
 	fi
 fi

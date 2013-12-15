@@ -23,8 +23,18 @@ public:/* Static instance function, to get a copy of the singleton */
 	int prevWidth, prevHeight;
 	/* Screen ratio */
 	float xRatio, yRatio;
+	/// Origin game width and height
+	int originGameWidth, originGameHeight;
+	/// Game width and height
+	int gameWidth, gameHeight;
+	/// Game ratio
+	float xGameRatio, yGameRatio;
 	/* Pixel height and width */
 	double xPixel, yPixel;
+	/// Smallest pixel size
+	double minPixel;
+	/// 1 if game screen is touching left/right borders, 2 if screen is touching top/bottom, else 0
+	int appSize;
 	/* Color bits */
 	int bits;
 	/* Describes the used OpenGL version (4.2 or 3.3) */
