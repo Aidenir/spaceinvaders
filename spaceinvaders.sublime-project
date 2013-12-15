@@ -23,10 +23,10 @@
     [
         {
             "name": "Project Build",
-            "cmd": [ "./build.sh build"],
+            "cmd": [ "./build.sh build" ],
             "working_dir": "$project_path",
             "shell" : true,
-            "file_regex": "/([^/:]+):(\\d+):(\\d+): ",
+            "file_regex": "([^\n:]+):(\\d+):",
             "variants": [
             	{	
            			"cmd": [ "./build.sh build r"],
@@ -35,11 +35,10 @@
             		"name" : "Release"
             	},
             	{	
-           			"cmd": [ "./build.sh clean" ],
+                    "cmd": [ "./build.sh clean" ],
            			"working_dir": "$project_path",
             		"name" : "Clean",
                     "shell" : true,
-            		"selector" : "source.shell"
             	},
                 {   
                     "cmd": [ "./build.sh rebuild"],

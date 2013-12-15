@@ -21,6 +21,7 @@ setupDebug()
 		mkdir bin/debug
 		cd bin/debug
 		cmake ../../
+		ln -s ../../src/shaders shaders
 		cd ../../
 	fi
 }
@@ -30,6 +31,7 @@ setupRelease() {
 		mkdir bin/release
 		cd bin/release
 		cmake -DCMAKE_BUILD_TYPE=Release ../../
+		ln -s ../../src/shaders shaders
 		cd ../../
 	fi
 }
