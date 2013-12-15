@@ -67,7 +67,7 @@
             "-Wno-return-type"
         ],
         "sublimeclang_options_script": "${project_path:flags.rb} ${project_path:bin/debug}",
-        "sublimegdb_commandline": "gdb --interpreter=mi ./${project_base_name}",
+        "sublimegdb_commandline": "gdb --interpreter=mi ./spaceinvaders",
         "sublimegdb_workingdir": "${project_path:bin/debug}"
     }
 }
